@@ -67,6 +67,8 @@
             --accent: #7fcfff;
             --glow: #a78bff;
             --violet: #d7c9ff;
+            --content-width: 1160px;
+            --content-gutter: clamp(28px, 5vw, 72px);
             --font-ui: "OxaniumLocal", "Microsoft YaHei UI", "PingFang SC", "Noto Sans SC", sans-serif;
             --font-display: "OrbitronLocal", "OxaniumLocal", "Microsoft YaHei UI", "PingFang SC", "Noto Sans SC", sans-serif;
             --font-cn-display: "NotoSansSCLocal", "Microsoft YaHei UI", "PingFang SC", "Noto Sans SC", sans-serif;
@@ -599,7 +601,7 @@
         h1 {
             max-width: min(1040px, 100%);
             font-family: var(--font-display);
-            font-size: clamp(2.15rem, 5.35vw, 5.65rem);
+            font-size: clamp(3.1rem, 3.65rem + 1.45vw, 5.65rem);
             line-height: 0.92;
             font-weight: 800;
             letter-spacing: 0.02em;
@@ -668,7 +670,7 @@
             align-items: center;
             min-height: 0.96em;
             color: var(--glow);
-            font-size: clamp(1.8rem, 4.35vw, 4.45rem);
+            font-size: clamp(2.35rem, 2.75rem + 1.05vw, 4.45rem);
             line-height: 0.92;
             font-weight: 700;
             text-shadow: 0 0 18px rgba(167, 139, 255, 0.44), 0 0 42px rgba(127, 207, 255, 0.22);
@@ -2510,20 +2512,43 @@
         }
 
         #home .scene-inner {
-            width: min(760px, 58vw);
-            margin-left: clamp(20px, 7vw, 108px);
+            position: relative;
+            width: min(var(--content-width), calc(100vw - var(--content-gutter) * 2));
+            margin-left: auto;
+            margin-right: auto;
             padding: clamp(18px, 2.3vw, 30px);
             border-left: 1px solid rgba(139, 214, 255, 0.24);
-            background: linear-gradient(90deg, rgba(8, 13, 30, 0.42), rgba(8, 13, 30, 0.18) 72%, transparent);
-            backdrop-filter: blur(4px);
+            background: transparent;
+            backdrop-filter: none;
         }
 
         #home .hero-title {
-            max-width: 720px;
+            max-width: min(720px, 54vw);
+        }
+
+        #home .scene-inner::before {
+            content: "";
+            position: absolute;
+            inset: clamp(4px, 0.8vw, 12px) auto clamp(4px, 0.8vw, 12px) 0;
+            width: min(460px, 36%);
+            z-index: -1;
+            pointer-events: none;
+            background: linear-gradient(90deg, rgba(8, 13, 30, 0.32), rgba(8, 13, 30, 0.12) 58%, transparent 100%);
+            filter: blur(4px);
+            backdrop-filter: blur(4px);
         }
 
         #home .hero-actions {
             margin-top: 30px;
+        }
+
+        @media (min-width: 1440px) {
+            #home .scene-inner,
+            #about .scene-inner,
+            .capability-layout,
+            #work .scene-inner {
+                width: min(var(--content-width), calc(100vw - var(--content-gutter) * 2));
+            }
         }
 
         #about::after {
@@ -2535,8 +2560,8 @@
 
         #about .scene-inner {
             position: relative;
-            width: min(880px, 66vw);
-            margin-left: clamp(18px, 6vw, 96px);
+            width: min(var(--content-width), calc(100vw - var(--content-gutter) * 2));
+            margin-left: auto;
             margin-right: auto;
         }
 
@@ -2555,6 +2580,7 @@
             grid-template-columns: minmax(210px, 240px) minmax(360px, 520px);
             gap: clamp(22px, 3.6vw, 48px);
             align-items: start;
+            justify-content: start;
         }
 
         .about-profile {
@@ -2670,12 +2696,12 @@
         }
 
         .capability-card:nth-child(2) {
-            --cap-left: 18%;
+            --cap-left: 14%;
             --cap-top: calc(17% + 22px);
         }
 
         .capability-card:nth-child(3) {
-            --cap-left: 34%;
+            --cap-left: 32%;
             --cap-top: 9%;
         }
 
@@ -2685,12 +2711,12 @@
         }
 
         .capability-card:nth-child(5) {
-            --cap-left: 66%;
+            --cap-left: 68%;
             --cap-top: 9%;
         }
 
         .capability-card:nth-child(6) {
-            --cap-left: 82%;
+            --cap-left: 86%;
             --cap-top: calc(17% + 22px);
         }
 
@@ -2817,7 +2843,7 @@
         #contact .scene-inner {
             width: min(620px, 42vw);
             margin-left: auto;
-            margin-right: clamp(20px, 7vw, 112px);
+            margin-right: max(calc((100vw - var(--content-width)) / 2 - clamp(24px, 4vw, 72px)), var(--content-gutter));
             align-self: center;
             translate: 0 clamp(36px, 7vh, 72px);
         }
@@ -2838,7 +2864,7 @@
             transition-delay: 0ms;
         }
 
-        body.contact-ready #contact .scene-inner[data-rise].is-visible {
+        body.contact-ready.contact-reveal-armed #contact .scene-inner[data-rise].is-visible {
             opacity: 1;
             transform: translateY(var(--rise-offset, 0px)) scale(1);
         }
@@ -3599,6 +3625,7 @@
         let cardContinuityTimer = 0;
         let cardPageExitTimer = 0;
         let contactRevealTimer = 0;
+        let contactRevealArmed = false;
         let cursorAnimationFrame = 0;
         let cursorParticleTimer = 0;
         let cursorX = window.innerWidth / 2;
@@ -4245,18 +4272,26 @@
 
         function setContactRevealReady(isReady) {
             document.body.classList.toggle("contact-ready", isReady);
+            document.body.classList.toggle("contact-reveal-armed", contactRevealArmed && isReady);
         }
 
-        function scheduleContactReveal(index, delay = 0) {
+        function scheduleContactReveal(index, delay = 0, force = false) {
             window.clearTimeout(contactRevealTimer);
             if (scenes[index] !== contactScene) {
                 contactRevealTimer = 0;
+                contactRevealArmed = false;
+                setContactRevealReady(false);
+                return;
+            }
+
+            if (!force && !contactRevealArmed) {
                 setContactRevealReady(false);
                 return;
             }
 
             contactRevealTimer = window.setTimeout(() => {
                 contactRevealTimer = 0;
+                contactRevealArmed = true;
                 setContactRevealReady(true);
             }, delay);
         }
@@ -4287,6 +4322,7 @@
             isPaging = true;
             window.clearTimeout(contactRevealTimer);
             contactRevealTimer = 0;
+            contactRevealArmed = false;
             setContactRevealReady(false);
             clearCardContinuity();
 
@@ -4300,7 +4336,7 @@
                     isPaging = false;
                     clearPagingMotion();
                     getCardMotionRoot(previousSceneIndex)?.classList.remove("is-card-exiting");
-                    scheduleContactReveal(currentSceneIndex, reducedMotion.matches ? 0 : 160);
+                    scheduleContactReveal(currentSceneIndex, reducedMotion.matches ? 0 : 220, true);
                     renderScrollState();
                 }, reducedMotion.matches ? 80 : 1160);
             }, exitDelay);
@@ -4320,8 +4356,10 @@
             nav.classList.toggle("is-scrolled", scrollTop > 28);
             document.body.classList.toggle("has-scrolled", scrollTop > 80);
             if (!isPaging) {
-                if (scenes[currentSceneIndex] !== contactScene || !contactRevealTimer) {
+                if (scenes[currentSceneIndex] !== contactScene) {
                     scheduleContactReveal(currentSceneIndex);
+                } else if (!contactRevealArmed && !contactRevealTimer) {
+                    scheduleContactReveal(currentSceneIndex, reducedMotion.matches ? 0 : 900, true);
                 }
             }
 

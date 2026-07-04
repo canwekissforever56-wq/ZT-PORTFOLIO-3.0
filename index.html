@@ -702,7 +702,7 @@
             content: "";
             width: 0.075em;
             height: 0.72em;
-            margin-left: 0.1em;
+            margin-left: 0.02em;
             border-radius: 999px;
             background: var(--glow);
             box-shadow: 0 0 16px rgba(167, 139, 255, 0.92), 0 0 34px rgba(127, 207, 255, 0.5);
@@ -1725,7 +1725,9 @@
             width: 100%;
             height: 100%;
             transform-style: preserve-3d;
+            -moz-transform-style: preserve-3d;
             transition: transform 720ms var(--ease-in-out);
+            will-change: transform;
         }
 
         .capability-card:hover .capability-card-inner,
@@ -1747,6 +1749,8 @@
                 linear-gradient(160deg, rgba(255, 255, 255, 0.13), rgba(255, 255, 255, 0.02) 42%),
                 linear-gradient(330deg, rgba(167, 139, 255, 0.18), rgba(127, 207, 255, 0.06) 48%, rgba(0, 0, 0, 0.34));
             backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            -moz-backface-visibility: hidden;
             box-shadow:
                 0 28px 70px rgba(0, 0, 0, 0.38),
                 0 0 26px rgba(127, 207, 255, 0.12);
@@ -1762,6 +1766,7 @@
         .capability-back {
             align-items: center;
             text-align: center;
+            transform: rotateY(0deg) translateZ(1px);
             background:
                 linear-gradient(160deg, rgba(255, 255, 255, 0.13), rgba(255, 255, 255, 0.02) 42%),
                 linear-gradient(330deg, rgba(167, 139, 255, 0.18), rgba(127, 207, 255, 0.06) 48%, rgba(0, 0, 0, 0.34));
@@ -1818,7 +1823,7 @@
             gap: clamp(10px, 1.8vh, 16px);
             justify-content: center;
             padding-block: clamp(18px, 2.4vh, 26px);
-            transform: rotateY(180deg);
+            transform: rotateY(180deg) translateZ(1px);
         }
 
         .capability-front::before {
@@ -1842,6 +1847,25 @@
                 0 34px 88px rgba(0, 0, 0, 0.44),
                 0 0 34px rgba(139, 214, 255, 0.22),
                 0 0 54px rgba(167, 139, 255, 0.16);
+        }
+
+        @-moz-document url-prefix() {
+            .capability-face {
+                background: rgba(8, 13, 30, 0.82);
+                backdrop-filter: none;
+            }
+
+            .capability-back,
+            .capability-front {
+                background:
+                    linear-gradient(160deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.025) 42%),
+                    linear-gradient(330deg, rgba(167, 139, 255, 0.16), rgba(127, 207, 255, 0.06) 48%, rgba(8, 13, 30, 0.82));
+            }
+
+            .capability-card:hover .capability-face,
+            .capability-card:focus .capability-face {
+                background: rgba(5, 8, 18, 0.9);
+            }
         }
 
         .capability-card.is-locked {
@@ -2828,9 +2852,11 @@
 
         #work .portfolio-hint {
             margin-top: clamp(18px, 4vh, 42px);
-            text-align: left;
-            width: min(240px, 22vw);
-            margin-left: clamp(20px, 5vw, 72px);
+            text-align: center;
+            width: min(630px, 49vw);
+            margin-left: auto;
+            margin-right: auto;
+            translate: -19px 0;
         }
 
         #contact::after {
@@ -3046,6 +3072,8 @@
 
             #work .portfolio-hint {
                 text-align: center;
+                width: 100%;
+                translate: 0 0;
             }
 
             .lead,
@@ -3296,7 +3324,7 @@
                 <h1 class="hero-title">
                     <span class="hero-name">Zeng Ting</span>
                     <span class="hero-portfolio title-highlight">Portfolio</span>
-                    <span class="hero-year typewriter is-typing" aria-label="2025-2026" style="--typewriter-width: 10.75ch; --typewriter-steps: 9;"><span class="typewriter-text">2025-2026</span></span>
+                    <span class="hero-year typewriter is-typing" aria-label="2025-2026" style="--typewriter-width: 9.15ch; --typewriter-steps: 9;"><span class="typewriter-text">2025-2026</span></span>
                 </h1>
                 <p class="lead">
                     曾婷，交互设计方向硕士。擅长用敏锐审美完成视觉传达，
@@ -3315,7 +3343,7 @@
                     <div class="identity-card gravity-card" tabindex="0" role="button" aria-label="点击查看个人形象照片">
                         <div class="gravity-card-inner">
                             <div class="gravity-card-face gravity-card-front identity-card-front">
-                                <h2 class="identity-name"><span class="typewriter identity-typewriter is-typing" aria-label="Zeng Ting" style="--typewriter-width: 4.35em; --typewriter-steps: 9; --typewriter-duration: 1250ms;"><span class="typewriter-text"><span>Zeng</span><span>Ting</span></span></span><span class="identity-cn">曾婷</span></h2>
+                                <h2 class="identity-name"><span class="typewriter identity-typewriter is-typing" aria-label="Zeng Ting" style="--typewriter-width: 3.72em; --typewriter-steps: 9; --typewriter-duration: 1250ms;"><span class="typewriter-text"><span>Zeng</span><span>Ting</span></span></span><span class="identity-cn">曾婷</span></h2>
                                 <p class="identity-meta">UX / UI / AIGC Designer</p>
                             </div>
                             <div class="gravity-card-face gravity-card-back" aria-hidden="true">
@@ -3546,7 +3574,7 @@
         <section id="contact" class="scene">
             <div class="scene-inner contact-layout" data-rise>
                 <p class="eyebrow">Contact</p>
-                <h2 class="section-title"><span class="typewriter is-typing" aria-label="开启设计创新新可能" style="--typewriter-width: 10.7em; --typewriter-steps: 9; --typewriter-duration: 1480ms;"><span class="typewriter-text">开启设计创新新可能</span></span></h2>
+                <h2 class="section-title"><span class="typewriter is-typing" aria-label="开启设计创新新可能" style="--typewriter-width: 9.25em; --typewriter-steps: 9; --typewriter-duration: 1480ms;"><span class="typewriter-text">开启设计创新新可能</span></span></h2>
                 <p class="lead">
                     期待共同打造充满感官享受、富有严密逻辑的好设计。
                     如果你正在寻找兼具研究、体验、视觉与 AI 工具意识的设计伙伴，欢迎联系我。

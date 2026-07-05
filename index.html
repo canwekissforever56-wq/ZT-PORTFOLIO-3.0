@@ -118,6 +118,10 @@
             opacity: 1;
         }
 
+        .video-background.is-seamless-switch video {
+            transition: transform 1100ms var(--ease-out), filter 900ms ease;
+        }
+
         body.is-paging .video-background {
             filter: contrast(1.05) saturate(1.08);
         }
@@ -2869,7 +2873,7 @@
         #contact .scene-inner {
             width: min(620px, 42vw);
             margin-left: auto;
-            margin-right: max(calc((100vw - var(--content-width)) / 2 - clamp(24px, 4vw, 72px)), var(--content-gutter));
+            margin-right: max(calc((100vw - var(--content-width)) / 2 - clamp(44px, 5.2vw, 96px)), var(--content-gutter));
             align-self: center;
             translate: 0 clamp(36px, 7vh, 72px);
         }
@@ -3326,31 +3330,31 @@
         <video class="is-active" autoplay muted playsinline preload="auto" data-scene-video="0" data-video-mode="transition">
             <source src="assets/scene-1.mp4" type="video/mp4">
         </video>
-        <video muted playsinline preload="metadata" data-scene-video="1" data-video-mode="transition">
+        <video muted playsinline preload="auto" data-scene-video="1" data-video-mode="transition">
             <source src="assets/scene-2.mp4" type="video/mp4">
         </video>
-        <video muted playsinline preload="metadata" data-scene-video="2" data-video-mode="transition">
+        <video muted playsinline preload="auto" data-scene-video="2" data-video-mode="transition">
             <source src="assets/scene-3.mp4" type="video/mp4">
         </video>
-        <video muted playsinline preload="metadata" data-scene-video="3" data-video-mode="transition">
+        <video muted playsinline preload="auto" data-scene-video="3" data-video-mode="transition">
             <source src="assets/scene-4.mp4" type="video/mp4">
         </video>
-        <video muted playsinline preload="metadata" data-scene-video="4" data-video-mode="transition">
+        <video muted playsinline preload="auto" data-scene-video="4" data-video-mode="transition">
             <source src="assets/scene-5.mp4" type="video/mp4">
         </video>
-        <video muted playsinline preload="metadata" data-scene-video="0" data-video-mode="loop" loop>
+        <video muted playsinline preload="auto" data-scene-video="0" data-video-mode="loop" loop>
             <source src="assets/loop-1.mp4" type="video/mp4">
         </video>
-        <video muted playsinline preload="metadata" data-scene-video="1" data-video-mode="loop" loop>
+        <video muted playsinline preload="auto" data-scene-video="1" data-video-mode="loop" loop>
             <source src="assets/loop-2.mp4" type="video/mp4">
         </video>
-        <video muted playsinline preload="metadata" data-scene-video="2" data-video-mode="loop" loop>
+        <video muted playsinline preload="auto" data-scene-video="2" data-video-mode="loop" loop>
             <source src="assets/loop-3.mp4" type="video/mp4">
         </video>
-        <video muted playsinline preload="metadata" data-scene-video="3" data-video-mode="loop" loop>
+        <video muted playsinline preload="auto" data-scene-video="3" data-video-mode="loop" loop>
             <source src="assets/loop-4.mp4" type="video/mp4">
         </video>
-        <video muted playsinline preload="metadata" data-scene-video="4" data-video-mode="loop" loop>
+        <video muted playsinline preload="auto" data-scene-video="4" data-video-mode="loop" loop>
             <source src="assets/loop-5.mp4" type="video/mp4">
         </video>
     </div>
@@ -3680,6 +3684,7 @@
     <script>
         const nav = document.querySelector("nav");
         const progress = document.querySelector(".scroll-progress");
+        const videoBackground = document.querySelector(".video-background");
         const videos = Array.from(document.querySelectorAll(".video-background video"));
         const transitionVideos = videos.filter((video) => video.dataset.videoMode !== "loop");
         const loopVideos = videos.filter((video) => video.dataset.videoMode === "loop");
@@ -3734,6 +3739,11 @@
         let activePdfToken = 0;
         let activePdfLoadingTask = null;
         let activePdfDocument = null;
+        const LOOP_ENTRY_OFFSET = 0.24;
+        const VIDEO_CROSSFADE_MS = 760;
+        const preparedLoopVideos = new WeakSet();
+        const earlyLoopSwitchVideos = new WeakSet();
+        const inactiveVideoPauseTimers = new WeakMap();
 
         const revealObserver = new IntersectionObserver((entries) => {
             entries.forEach((entry) => {
@@ -3787,6 +3797,15 @@
             });
 
             return nearestIndex;
+        }
+
+        function getInitialSceneIndex() {
+            if (window.location.hash) {
+                const hashIndex = scenes.findIndex((scene) => `#${scene.id}` === window.location.hash);
+                if (hashIndex >= 0) return hashIndex;
+            }
+
+            return getNearestSceneIndex();
         }
 
         function getSceneProgress(index) {
@@ -4084,22 +4103,67 @@
             document.body.classList.remove("is-paging", "motion-down", "motion-up");
         }
 
-        function resetVideo(video) {
+        function resetVideo(video, startTime = 0) {
             try {
-                video.currentTime = 0;
+                video.currentTime = startTime;
             } catch (error) {
                 // Metadata may not be ready yet; the clip will still play from the start on first activation.
             }
         }
 
-        function playVideo(video, shouldReset = true) {
-            video.pause();
-            if (shouldReset) resetVideo(video);
+        function prepareVideoForInlinePlayback(video) {
             video.muted = true;
             video.defaultMuted = true;
             video.playsInline = true;
             video.setAttribute("playsinline", "");
             video.setAttribute("webkit-playsinline", "");
+        }
+
+        function prepareLoopVideo(index) {
+            const loopVideoIndex = getSceneVideoIndex(index, loopVideos);
+            const loopVideo = loopVideos[loopVideoIndex];
+            if (!loopVideo || preparedLoopVideos.has(loopVideo)) return;
+
+            preparedLoopVideos.add(loopVideo);
+            prepareVideoForInlinePlayback(loopVideo);
+            loopVideo.preload = "auto";
+            loopVideo.load();
+
+            const seekToFirstFrame = () => {
+                if (loopVideo.readyState < 1) return;
+                try {
+                    if (loopVideo.currentTime < LOOP_ENTRY_OFFSET) loopVideo.currentTime = LOOP_ENTRY_OFFSET;
+                } catch (error) {
+                    // Some mobile browsers only allow seeking after more data is available.
+                }
+            };
+
+            if (loopVideo.readyState >= 1) {
+                seekToFirstFrame();
+            } else {
+                loopVideo.addEventListener("loadedmetadata", seekToFirstFrame, { once: true });
+            }
+        }
+
+        function switchTransitionToLoopEarly(video) {
+            if (video.dataset.videoMode !== "transition" || !video.classList.contains("is-active")) return;
+            if (earlyLoopSwitchVideos.has(video) || !Number.isFinite(video.duration) || video.duration <= 0) return;
+
+            const remaining = video.duration - video.currentTime;
+            if (remaining > 0.32 || remaining < 0) return;
+
+            const loopVideoIndex = getSceneVideoIndex(currentSceneIndex, loopVideos);
+            const loopVideo = loopVideos[loopVideoIndex];
+            if (!loopVideo || loopVideo.readyState < 2) return;
+
+            earlyLoopSwitchVideos.add(video);
+            activateLoopVideo(currentSceneIndex, true);
+        }
+
+        function playVideo(video, shouldReset = true, startTime = 0) {
+            video.pause();
+            if (shouldReset) resetVideo(video, startTime);
+            prepareVideoForInlinePlayback(video);
 
             const playPromise = video.play();
             if (playPromise && typeof playPromise.catch === "function") {
@@ -4114,18 +4178,36 @@
             const fallbackCollection = collection.length ? collection : videos;
             const activeVideoIndex = getSceneVideoIndex(index, fallbackCollection);
             const activeVideo = fallbackCollection[activeVideoIndex] || null;
+            const previousActiveVideos = videos.filter((video) => video.classList.contains("is-active") && video !== activeVideo);
+            const isTransitionToLoop = mode === "loop" && previousActiveVideos.some((video) => video.dataset.videoMode === "transition");
+
+            if (mode === "transition") prepareLoopVideo(index);
+            if (isTransitionToLoop) {
+                videoBackground?.classList.add("is-seamless-switch");
+                window.setTimeout(() => {
+                    videoBackground?.classList.remove("is-seamless-switch");
+                }, 120);
+            }
 
             videos.forEach((video) => {
                 const isActive = video === activeVideo;
+                window.clearTimeout(inactiveVideoPauseTimers.get(video));
                 video.classList.toggle("is-active", isActive);
 
                 if (!isActive) {
-                    video.pause();
+                    if (isTransitionToLoop && video.dataset.videoMode === "transition") {
+                        const pauseTimer = window.setTimeout(() => {
+                            video.pause();
+                        }, VIDEO_CROSSFADE_MS);
+                        inactiveVideoPauseTimers.set(video, pauseTimer);
+                    } else {
+                        video.pause();
+                    }
                     return;
                 }
 
                 if (!shouldPlay) return;
-                playVideo(video, mode === "transition");
+                playVideo(video, mode === "transition" || mode === "loop", mode === "loop" ? LOOP_ENTRY_OFFSET : 0);
             });
         }
 
@@ -4139,7 +4221,37 @@
 
         function replayActiveBackgroundVideo() {
             const activeVideo = videos.find((video) => video.classList.contains("is-active"));
-            if (activeVideo) playVideo(activeVideo, false);
+            if (activeVideo) {
+                playVideo(activeVideo, false);
+                return;
+            }
+
+            activateLoopVideo(currentSceneIndex, true);
+        }
+
+        function startInitialBackgroundVideo() {
+            const shouldPlayHomeTransition = currentSceneIndex === 0 && transitionVideos.length;
+
+            if (!shouldPlayHomeTransition) {
+                activateLoopVideo(currentSceneIndex, true);
+                return;
+            }
+
+            const initialVideoIndex = getSceneVideoIndex(currentSceneIndex, transitionVideos);
+            const initialVideo = transitionVideos[initialVideoIndex];
+
+            if (!initialVideo) {
+                activateLoopVideo(currentSceneIndex, true);
+                return;
+            }
+
+            videos.forEach((video) => {
+                const isActive = video === initialVideo;
+                video.classList.toggle("is-active", isActive);
+                if (!isActive) video.pause();
+            });
+            prepareLoopVideo(currentSceneIndex);
+            playVideo(initialVideo, false);
         }
 
         function clearCardContinuity() {
@@ -4792,12 +4904,11 @@
         window.addEventListener("pointerdown", replayActiveBackgroundVideo, { passive: true, once: true });
 
         videos.forEach((video) => {
-            video.pause();
-            video.muted = true;
-            video.defaultMuted = true;
-            video.playsInline = true;
-            video.setAttribute("playsinline", "");
-            video.setAttribute("webkit-playsinline", "");
+            if (!video.classList.contains("is-active")) video.pause();
+            prepareVideoForInlinePlayback(video);
+            video.addEventListener("timeupdate", () => {
+                switchTransitionToLoopEarly(video);
+            });
             video.addEventListener("ended", () => {
                 video.pause();
                 if (video.dataset.videoMode === "transition" && video.classList.contains("is-active")) {
@@ -4811,10 +4922,12 @@
             });
         });
 
-        updatePagingState(getNearestSceneIndex());
+        updatePagingState(getInitialSceneIndex());
         scheduleContactReveal(currentSceneIndex);
         document.body.classList.add("motion-ready");
-        activateVideo(currentSceneIndex, true);
+        currentSceneIndex = getInitialSceneIndex();
+        setSceneClasses(currentSceneIndex);
+        startInitialBackgroundVideo();
         renderScrollState();
     </script>
 </body>

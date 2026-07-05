@@ -3744,6 +3744,7 @@
         const preparedLoopVideos = new WeakSet();
         const earlyLoopSwitchVideos = new WeakSet();
         const inactiveVideoPauseTimers = new WeakMap();
+        const playbackRetryTimers = new WeakMap();
 
         const revealObserver = new IntersectionObserver((entries) => {
             entries.forEach((entry) => {
@@ -4112,11 +4113,24 @@
         }
 
         function prepareVideoForInlinePlayback(video) {
+            video.autoplay = true;
             video.muted = true;
             video.defaultMuted = true;
             video.playsInline = true;
+            video.setAttribute("autoplay", "");
             video.setAttribute("playsinline", "");
             video.setAttribute("webkit-playsinline", "");
+        }
+
+        function schedulePlaybackRetry(video, delay = 320) {
+            if (!video || !video.classList.contains("is-active")) return;
+
+            window.clearTimeout(playbackRetryTimers.get(video));
+            const retryTimer = window.setTimeout(() => {
+                if (!video.classList.contains("is-active") || !video.paused) return;
+                playVideo(video, false);
+            }, delay);
+            playbackRetryTimers.set(video, retryTimer);
         }
 
         function prepareLoopVideo(index) {
@@ -4168,7 +4182,12 @@
             const playPromise = video.play();
             if (playPromise && typeof playPromise.catch === "function") {
                 playPromise.catch(() => {
-                    video.pause();
+                    if (!video.classList.contains("is-active")) {
+                        video.pause();
+                        return;
+                    }
+
+                    schedulePlaybackRetry(video, 420);
                 });
             }
         }
@@ -4222,7 +4241,9 @@
         function replayActiveBackgroundVideo() {
             const activeVideo = videos.find((video) => video.classList.contains("is-active"));
             if (activeVideo) {
-                playVideo(activeVideo, false);
+                if (activeVideo.paused || activeVideo.readyState < 2) {
+                    playVideo(activeVideo, false);
+                }
                 return;
             }
 
@@ -4898,7 +4919,10 @@
         });
 
         window.addEventListener("scroll", renderScrollState, { passive: true });
+        window.addEventListener("scroll", replayActiveBackgroundVideo, { passive: true });
         window.addEventListener("wheel", handleWheel, { passive: false });
+        window.addEventListener("click", replayActiveBackgroundVideo, { passive: true });
+        window.addEventListener("keydown", replayActiveBackgroundVideo, { passive: true });
         window.addEventListener("resize", renderScrollState);
         window.addEventListener("touchstart", replayActiveBackgroundVideo, { passive: true, once: true });
         window.addEventListener("pointerdown", replayActiveBackgroundVideo, { passive: true, once: true });
@@ -4908,6 +4932,12 @@
             prepareVideoForInlinePlayback(video);
             video.addEventListener("timeupdate", () => {
                 switchTransitionToLoopEarly(video);
+            });
+            video.addEventListener("loadeddata", () => {
+                schedulePlaybackRetry(video, 80);
+            });
+            video.addEventListener("canplay", () => {
+                schedulePlaybackRetry(video, 80);
             });
             video.addEventListener("ended", () => {
                 video.pause();

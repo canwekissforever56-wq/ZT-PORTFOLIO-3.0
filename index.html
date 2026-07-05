@@ -2379,6 +2379,7 @@
         .pdf-page canvas {
             max-width: 100%;
             height: auto;
+            aspect-ratio: var(--pdf-page-ratio);
             border-radius: 3px;
             background: #fff;
             box-shadow: 0 18px 54px rgba(0, 0, 0, 0.34);
@@ -3392,7 +3393,7 @@
                 <h1 class="hero-title">
                     <span class="hero-name">Zeng Ting</span>
                     <span class="hero-portfolio title-highlight">Portfolio</span>
-                    <span class="hero-year typewriter is-typing" aria-label="2025-2026" style="--typewriter-width: 9.15ch; --typewriter-steps: 9;"><span class="typewriter-text">2025-2026</span></span>
+                    <span class="hero-year typewriter is-typing" aria-label="2025-2026" style="--typewriter-width: 9.85ch; --typewriter-steps: 9;"><span class="typewriter-text">2025-2026</span></span>
                 </h1>
                 <p class="lead">
                     曾婷，交互设计方向硕士。擅长用敏锐审美完成视觉传达，
@@ -4668,6 +4669,11 @@
             if (!pdfPages || !pdfScroll) return;
 
             pdfPages.replaceChildren();
+            const scrollStyle = window.getComputedStyle(pdfScroll);
+            const horizontalPadding =
+                parseFloat(scrollStyle.paddingLeft || "0") +
+                parseFloat(scrollStyle.paddingRight || "0");
+            const contentWidth = Math.max(0, pdfScroll.clientWidth - horizontalPadding);
 
             for (let pageNumber = 1; pageNumber <= pdfDocument.numPages; pageNumber += 1) {
                 if (token !== activePdfToken) return;
@@ -4676,7 +4682,7 @@
                 if (token !== activePdfToken) return;
 
                 const baseViewport = page.getViewport({ scale: 1 });
-                const availableWidth = Math.max(260, Math.min(pdfScroll.clientWidth - 28, 980));
+                const availableWidth = Math.max(240, Math.min(contentWidth, 980));
                 const scale = clamp(availableWidth / baseViewport.width, 0.62, 1.72);
                 const viewport = page.getViewport({ scale });
                 const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
@@ -4688,7 +4694,8 @@
                 canvas.width = Math.floor(viewport.width * pixelRatio);
                 canvas.height = Math.floor(viewport.height * pixelRatio);
                 canvas.style.width = `${Math.floor(viewport.width)}px`;
-                canvas.style.height = `${Math.floor(viewport.height)}px`;
+                canvas.style.height = "auto";
+                canvas.style.setProperty("--pdf-page-ratio", `${viewport.width} / ${viewport.height}`);
 
                 const pageElement = document.createElement("section");
                 pageElement.className = "pdf-page";

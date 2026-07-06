@@ -558,12 +558,9 @@
             animation: sceneEnterSideLeft 1040ms cubic-bezier(0.16, 1, 0.3, 1) both;
         }
 
-        body.is-paging #capabilities.scene.is-current .scene-inner {
-            animation: sceneEnterFan 1080ms cubic-bezier(0.16, 1, 0.3, 1) both;
-        }
-
+        body.is-paging #capabilities.scene.is-current .scene-inner,
         body.is-paging #work.scene.is-current .scene-inner {
-            animation: sceneEnterSweep 1040ms cubic-bezier(0.16, 1, 0.3, 1) both;
+            animation: cardSceneSettle 620ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
         }
 
         body.is-paging #contact.scene.is-current .scene-inner {
@@ -956,6 +953,37 @@
             }
         }
 
+        @keyframes cardSceneSettle {
+            0% {
+                opacity: 0.82;
+                filter: blur(4px);
+                transform: translate3d(0, 12px, 0) scale(0.992);
+            }
+            100% {
+                opacity: 1;
+                filter: none;
+                transform: translate3d(0, 0, 0) scale(1);
+            }
+        }
+
+        @keyframes contactCardEnter {
+            0% {
+                opacity: 0;
+                filter: blur(10px);
+                transform: translateY(72px) scale(0.975);
+            }
+            64% {
+                opacity: 1;
+                filter: blur(1px);
+                transform: translateY(calc(var(--rise-offset, 0px) - 6px)) scale(1.006);
+            }
+            100% {
+                opacity: 1;
+                filter: none;
+                transform: translateY(var(--rise-offset, 0px)) scale(1);
+            }
+        }
+
         @keyframes elementSlip {
             0% {
                 opacity: 0;
@@ -972,18 +1000,13 @@
         @keyframes cardArrive {
             0% {
                 opacity: 0;
-                transform: translate3d(var(--deal-x, 0vw), var(--deal-y, 0vh), -240px) rotateX(18deg) rotateY(var(--deal-yaw, 0deg)) rotateZ(var(--deal-rotate, 0deg)) scale(0.62);
-                filter: blur(12px) saturate(1.22);
+                transform: translate3d(var(--deal-x, 0vw), var(--deal-y, 0vh), -150px) rotateX(13deg) rotateY(var(--deal-yaw, 0deg)) rotateZ(var(--deal-rotate, 0deg)) scale(0.72);
+                filter: blur(10px) saturate(1.16);
             }
-            48% {
+            58% {
                 opacity: 1;
-                transform: translate3d(calc(var(--deal-x, 0vw) * 0.24), calc(var(--deal-y, 0vh) * 0.24), -52px) rotateX(7deg) rotateY(calc(var(--enter-yaw, 0deg) * 0.38)) rotateZ(calc(var(--enter-rotate, 0deg) * 0.55)) scale(0.92);
-                filter: blur(2px) saturate(1.12);
-            }
-            78% {
-                opacity: 1;
-                transform: var(--card-pose) translate3d(0, -8px, 34px) scale(1.02);
-                filter: blur(0) saturate(1.08);
+                transform: var(--card-pose) translate3d(0, -8px, 34px) scale(1.015);
+                filter: blur(1px) saturate(1.06);
             }
             100% {
                 opacity: 1;
@@ -999,14 +1022,14 @@
                 filter: none;
             }
             42% {
-                opacity: 0.96;
-                transform: translate3d(calc(var(--deal-x, 0vw) * 0.24), calc(var(--deal-y, 0vh) * 0.24), -52px) rotateX(7deg) rotateY(calc(var(--enter-yaw, 0deg) * 0.38)) rotateZ(calc(var(--enter-rotate, 0deg) * 0.55)) scale(0.92);
-                filter: blur(2px) saturate(1.12);
+                opacity: 0.92;
+                transform: var(--card-pose) translate3d(0, 2px, -34px) scale(0.94);
+                filter: blur(1px) saturate(1.06);
             }
             100% {
                 opacity: 0;
-                transform: translate3d(var(--deal-x, 0vw), var(--deal-y, 0vh), -240px) rotateX(18deg) rotateY(var(--deal-yaw, 0deg)) rotateZ(var(--deal-rotate, 0deg)) scale(0.62);
-                filter: blur(12px) saturate(1.22);
+                transform: translate3d(var(--deal-x, 0vw), var(--deal-y, 0vh), -170px) rotateX(13deg) rotateY(var(--deal-yaw, 0deg)) rotateZ(var(--deal-rotate, 0deg)) scale(0.68);
+                filter: blur(12px) saturate(1.16);
             }
         }
 
@@ -1019,18 +1042,13 @@
         @keyframes capabilityDealIn {
             0% {
                 opacity: 0;
-                transform: translateX(-50%) translate3d(var(--cap-deal-x, 0px), var(--cap-deal-y, 0vh), -260px) rotateX(20deg) rotateY(0deg) rotateZ(0deg) scale(0.58);
-                filter: blur(12px) saturate(1.24);
+                transform: translateX(-50%) translate3d(var(--cap-deal-x, 0px), var(--cap-deal-y, 0vh), -150px) rotateX(14deg) rotateY(var(--cap-enter-yaw, 0deg)) rotateZ(var(--cap-enter-rotate, 0deg)) scale(0.72);
+                filter: blur(10px) saturate(1.16);
             }
-            42% {
+            58% {
                 opacity: 1;
-                transform: translateX(-50%) translate3d(calc(var(--cap-deal-x, 0px) * 0.28), calc(var(--cap-deal-y, 0vh) * 0.28), -72px) rotateX(8deg) rotateY(calc(var(--cap-enter-yaw, 0deg) * 0.45)) rotateZ(calc(var(--cap-enter-rotate, 0deg) * 0.45)) scale(0.9);
-                filter: blur(2px) saturate(1.12);
-            }
-            74% {
-                opacity: 1;
-                transform: translateX(-50%) translate3d(calc(var(--cap-deal-x, 0px) * -0.04), -10px, 28px) rotateX(-2deg) rotateY(calc(var(--cap-enter-yaw, 0deg) * 1.04)) rotateZ(calc(var(--cap-enter-rotate, 0deg) * 1.04)) scale(1.02);
-                filter: blur(0) saturate(1.1);
+                transform: var(--cap-pose) translate3d(0, -10px, 34px) scale(1.015);
+                filter: blur(1px) saturate(1.06);
             }
             100% {
                 opacity: 1;
@@ -1046,14 +1064,14 @@
                 filter: none;
             }
             42% {
-                opacity: 0.96;
-                transform: translateX(-50%) translate3d(calc(var(--cap-deal-x, 0px) * 0.28), calc(var(--cap-deal-y, 0vh) * 0.28), -72px) rotateX(8deg) rotateY(calc(var(--cap-enter-yaw, 0deg) * 0.45)) rotateZ(calc(var(--cap-enter-rotate, 0deg) * 0.45)) scale(0.9);
-                filter: blur(2px) saturate(1.12);
+                opacity: 0.9;
+                transform: var(--cap-pose) translate3d(0, 4px, -36px) scale(0.94);
+                filter: blur(1px) saturate(1.06);
             }
             100% {
                 opacity: 0;
-                transform: translateX(-50%) translate3d(var(--cap-deal-x, 0px), var(--cap-deal-y, 0vh), -260px) rotateX(20deg) rotateY(0deg) rotateZ(0deg) scale(0.58);
-                filter: blur(12px) saturate(1.24);
+                transform: translateX(-50%) translate3d(var(--cap-deal-x, 0px), var(--cap-deal-y, 0vh), -170px) rotateX(14deg) rotateY(var(--cap-enter-yaw, 0deg)) rotateZ(var(--cap-enter-rotate, 0deg)) scale(0.68);
+                filter: blur(12px) saturate(1.16);
             }
         }
 
@@ -1653,8 +1671,9 @@
             --cap-enter-yaw: 16deg;
             --cap-enter-rotate: -17deg;
             --cap-deal-x: 28vw;
-            --cap-deal-y: 8vh;
+            --cap-deal-y: 46vh;
             --cap-delay: 72ms;
+            --cap-exit-delay: 288ms;
         }
 
         .capability-card:nth-child(3) {
@@ -1665,8 +1684,9 @@
             --cap-enter-yaw: 10deg;
             --cap-enter-rotate: -10deg;
             --cap-deal-x: 14vw;
-            --cap-deal-y: 12vh;
+            --cap-deal-y: 54vh;
             --cap-delay: 144ms;
+            --cap-exit-delay: 216ms;
         }
 
         .capability-card:nth-child(4) {
@@ -1677,8 +1697,9 @@
             --cap-enter-yaw: 0deg;
             --cap-enter-rotate: 0deg;
             --cap-deal-x: 0vw;
-            --cap-deal-y: 14vh;
+            --cap-deal-y: 58vh;
             --cap-delay: 216ms;
+            --cap-exit-delay: 144ms;
         }
 
         .capability-card:nth-child(5) {
@@ -1689,8 +1710,9 @@
             --cap-enter-yaw: -10deg;
             --cap-enter-rotate: 10deg;
             --cap-deal-x: -14vw;
-            --cap-deal-y: 12vh;
+            --cap-deal-y: 54vh;
             --cap-delay: 288ms;
+            --cap-exit-delay: 72ms;
         }
 
         .capability-card:nth-child(6) {
@@ -1701,8 +1723,9 @@
             --cap-enter-yaw: -16deg;
             --cap-enter-rotate: 17deg;
             --cap-deal-x: -28vw;
-            --cap-deal-y: 8vh;
+            --cap-deal-y: 46vh;
             --cap-delay: 360ms;
+            --cap-exit-delay: 0ms;
         }
 
         .capability-card:nth-child(7) {
@@ -1949,14 +1972,21 @@
             text-wrap: pretty;
         }
 
-        .capability-deck.is-visible .capability-card {
-            animation: capabilityDealIn 760ms cubic-bezier(0.16, 1, 0.3, 1) both;
-            animation-delay: var(--cap-delay, 0ms);
+        .capability-deck.is-card-prepping .capability-card,
+        .portfolio-grid.is-card-prepping .portfolio-item {
+            opacity: 0;
+            pointer-events: none;
+            animation: none;
+        }
+
+        .capability-deck.is-visible.is-card-entering .capability-card {
+            animation: capabilityDealIn 980ms cubic-bezier(0.16, 0.92, 0.18, 1) both;
+            animation-delay: calc(var(--cap-delay, 0ms) * 0.78);
         }
 
         .capability-deck.is-card-exiting .capability-card {
-            animation: capabilityDealOut 680ms cubic-bezier(0.32, 0, 0.12, 1) both;
-            animation-delay: calc(var(--cap-delay, 0ms) * 0.32);
+            animation: capabilityDealOut 720ms cubic-bezier(0.38, 0, 0.18, 1) both;
+            animation-delay: calc(var(--cap-exit-delay, var(--cap-delay, 0ms)) * 0.52);
             pointer-events: none;
         }
 
@@ -2051,10 +2081,10 @@
             --card-top: 18%;
             --card-layer: 4;
             --card-pose: translate3d(0, 0, 72px) rotateX(7deg) rotateY(10deg) rotateZ(-5deg) scale(0.98);
-            --deal-x: 38vw;
-            --deal-y: -1vh;
-            --deal-yaw: 18deg;
-            --deal-rotate: 8deg;
+            --deal-x: 46vw;
+            --deal-y: 14vh;
+            --deal-yaw: 20deg;
+            --deal-rotate: 14deg;
             --enter-yaw: 12deg;
             --enter-rotate: -12deg;
         }
@@ -2064,10 +2094,10 @@
             --card-top: 4%;
             --card-layer: 5;
             --card-pose: translate3d(0, 0, 92px) rotateX(7deg) rotateY(-9deg) rotateZ(4deg) scale(1);
-            --deal-x: 13vw;
-            --deal-y: 13vh;
-            --deal-yaw: 8deg;
-            --deal-rotate: 5deg;
+            --deal-x: 22vw;
+            --deal-y: 28vh;
+            --deal-yaw: 10deg;
+            --deal-rotate: 8deg;
             --enter-yaw: -12deg;
             --enter-rotate: 12deg;
         }
@@ -2077,10 +2107,10 @@
             --card-top: 22%;
             --card-layer: 2;
             --card-pose: translate3d(0, 0, 58px) rotateX(8deg) rotateY(9deg) rotateZ(-4deg) scale(0.96);
-            --deal-x: -12vw;
-            --deal-y: -3vh;
+            --deal-x: -2vw;
+            --deal-y: 10vh;
             --deal-yaw: -8deg;
-            --deal-rotate: -5deg;
+            --deal-rotate: -7deg;
             --enter-yaw: 13deg;
             --enter-rotate: -12deg;
         }
@@ -2090,10 +2120,10 @@
             --card-top: 10%;
             --card-layer: 3;
             --card-pose: translate3d(0, 0, 64px) rotateX(8deg) rotateY(-10deg) rotateZ(5deg) scale(0.97);
-            --deal-x: -36vw;
-            --deal-y: 9vh;
-            --deal-yaw: -18deg;
-            --deal-rotate: -8deg;
+            --deal-x: -26vw;
+            --deal-y: 22vh;
+            --deal-yaw: -20deg;
+            --deal-rotate: -14deg;
             --enter-yaw: -13deg;
             --enter-rotate: 12deg;
         }
@@ -2210,15 +2240,15 @@
             animation: hintColorSweep 7.5s ease-in-out infinite;
         }
 
-        .portfolio-grid.is-visible:not(.is-settled) .portfolio-item {
-            animation: cardArrive 780ms cubic-bezier(0.16, 1, 0.3, 1) both;
-            animation-delay: var(--card-delay, 0ms);
+        .portfolio-grid.is-visible.is-card-entering:not(.is-settled) .portfolio-item {
+            animation: cardArrive 900ms cubic-bezier(0.16, 0.92, 0.18, 1) both;
+            animation-delay: calc(var(--card-delay, 0ms) * 0.72);
         }
 
         .portfolio-grid.is-visible.is-card-exiting .portfolio-item,
         .portfolio-grid.is-card-exiting .portfolio-item {
-            animation: cardDepart 680ms cubic-bezier(0.32, 0, 0.12, 1) both;
-            animation-delay: calc(var(--card-delay, 0ms) * 0.32);
+            animation: cardDepart 660ms cubic-bezier(0.38, 0, 0.18, 1) both;
+            animation-delay: calc(var(--card-exit-delay, var(--card-delay, 0ms)) * 0.42);
             pointer-events: none;
         }
 
@@ -2227,9 +2257,8 @@
             animation-delay: 0ms;
         }
 
-        .portfolio-grid.is-visible:not(.is-settled) .portfolio-item::after {
-            animation: cardTrace 780ms var(--ease-out) both;
-            animation-delay: calc(var(--card-delay, 0ms) + 120ms);
+        .portfolio-grid.is-visible.is-card-entering:not(.is-settled) .portfolio-item::after {
+            animation: none;
         }
 
         body.pdf-open {
@@ -2891,19 +2920,29 @@
 
         #contact .scene-inner[data-rise] {
             opacity: 0;
-            transform: translateY(64px) scale(0.985);
+            filter: blur(10px);
+            transform: translateY(76px) scale(0.975);
+            transition:
+                opacity 860ms ease,
+                filter 980ms ease,
+                transform 1120ms cubic-bezier(0.16, 1, 0.3, 1);
             transition-delay: 0ms;
+            pointer-events: none;
         }
 
         body.contact-ready.contact-reveal-armed #contact .scene-inner[data-rise].is-visible {
             opacity: 1;
+            filter: none;
             transform: translateY(var(--rise-offset, 0px)) scale(1);
+            animation: contactCardEnter 980ms cubic-bezier(0.16, 1, 0.3, 1) both;
+            pointer-events: auto;
         }
 
         body.is-paging #contact.scene.is-current .scene-inner {
             animation: none;
             opacity: 0;
-            transform: translateY(64px) scale(0.985);
+            filter: blur(10px);
+            transform: translateY(76px) scale(0.975);
             pointer-events: none;
         }
 
@@ -3755,11 +3794,22 @@
                 if (entry.target === portfolioGrid) {
                     window.clearTimeout(portfolioSettleTimer);
                     if (isVisible) {
-                        portfolioSettleTimer = window.setTimeout(() => {
-                            entry.target.classList.add("is-settled");
-                        }, 1080);
+                        if (!isPaging) {
+                            entry.target.classList.remove("is-settled");
+                            entry.target.classList.add("is-card-entering");
+                            portfolioSettleTimer = window.setTimeout(() => {
+                                entry.target.classList.add("is-settled");
+                            }, 1580);
+                        }
                     } else {
                         entry.target.classList.remove("is-settled");
+                        entry.target.classList.remove("is-card-entering");
+                    }
+                } else if (entry.target.classList.contains("capability-deck")) {
+                    if (isVisible && !isPaging) {
+                        entry.target.classList.add("is-card-entering");
+                    } else if (!isVisible) {
+                        entry.target.classList.remove("is-card-entering");
                     }
                 }
             });
@@ -3774,6 +3824,7 @@
         });
         portfolioItems.forEach((item, index) => {
             item.style.setProperty("--card-delay", `${index * 72}ms`);
+            item.style.setProperty("--card-exit-delay", `${Math.abs(index - 1.5) * 76}ms`);
         });
 
         function clamp(value, min, max) {
@@ -4293,21 +4344,42 @@
             return null;
         }
 
+        function startCardPageEntry(index) {
+            const motionRoot = getCardMotionRoot(index);
+            if (!motionRoot || reducedMotion.matches) return;
+
+            window.clearTimeout(portfolioSettleTimer);
+            motionRoot.classList.remove("is-card-prepping");
+            motionRoot.classList.remove("is-card-entering");
+            motionRoot.classList.remove("is-card-exiting");
+            motionRoot.classList.remove("is-settled");
+            void motionRoot.offsetWidth;
+            motionRoot.classList.add("is-card-entering");
+
+            if (motionRoot === portfolioGrid) {
+                portfolioSettleTimer = window.setTimeout(() => {
+                    motionRoot.classList.add("is-settled");
+                }, 1680);
+            }
+        }
+
         function startCardPageExit(index) {
             const motionRoot = getCardMotionRoot(index);
             if (!motionRoot || reducedMotion.matches) return 0;
 
             window.clearTimeout(cardPageExitTimer);
             stopCardFlipLoop();
+            motionRoot.classList.remove("is-card-prepping");
             motionRoot.classList.remove("is-card-exiting");
+            motionRoot.classList.remove("is-card-entering");
             void motionRoot.offsetWidth;
             motionRoot.classList.add("is-card-exiting");
 
             cardPageExitTimer = window.setTimeout(() => {
                 motionRoot.classList.remove("is-card-exiting");
-            }, 1040);
+            }, 980);
 
-            return 820;
+            return 420;
         }
 
         function getProjectedRect(element, targetScrollTop) {
@@ -4549,7 +4621,9 @@
                 window.clearTimeout(cardPageExitTimer);
                 isPaging = false;
                 clearPagingMotion();
-                getCardMotionRoot(currentSceneIndex)?.classList.remove("is-card-exiting");
+                const currentMotionRoot = getCardMotionRoot(currentSceneIndex);
+                currentMotionRoot?.classList.remove("is-card-prepping");
+                currentMotionRoot?.classList.remove("is-card-exiting");
             }
 
             const previousSceneIndex = currentSceneIndex;
@@ -4564,6 +4638,13 @@
 
             window.setTimeout(() => {
                 setPagingMotion(direction);
+                const nextMotionRoot = getCardMotionRoot(nextIndex);
+                if (nextMotionRoot && !reducedMotion.matches) {
+                    nextMotionRoot.classList.add("is-card-prepping");
+                }
+                nextMotionRoot?.classList.remove("is-card-entering");
+                nextMotionRoot?.classList.remove("is-card-exiting");
+                nextMotionRoot?.classList.remove("is-settled");
                 updatePagingState(nextIndex);
                 activateVideo(nextIndex, true);
                 animateScrollTo(getSceneTop(nextIndex), reducedMotion.matches ? 0 : 1080);
@@ -4572,6 +4653,7 @@
                     isPaging = false;
                     clearPagingMotion();
                     getCardMotionRoot(previousSceneIndex)?.classList.remove("is-card-exiting");
+                    startCardPageEntry(nextIndex);
                     scheduleContactReveal(currentSceneIndex, reducedMotion.matches ? 0 : 220, true);
                     renderScrollState();
                 }, reducedMotion.matches ? 80 : 1160);

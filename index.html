@@ -969,18 +969,41 @@
         @keyframes contactCardEnter {
             0% {
                 opacity: 0;
-                filter: blur(10px);
-                transform: translateY(72px) scale(0.975);
+                filter: blur(14px);
+                transform: translateY(108px) scale(0.955);
             }
-            64% {
-                opacity: 1;
-                filter: blur(1px);
-                transform: translateY(calc(var(--rise-offset, 0px) - 6px)) scale(1.006);
+            35% {
+                opacity: 0.28;
+                filter: blur(9px);
+                transform: translateY(62px) scale(0.972);
+            }
+            72% {
+                opacity: 0.86;
+                filter: blur(2px);
+                transform: translateY(calc(var(--rise-offset, 0px) + 8px)) scale(0.995);
             }
             100% {
                 opacity: 1;
                 filter: none;
                 transform: translateY(var(--rise-offset, 0px)) scale(1);
+            }
+        }
+
+        @keyframes contactCardExit {
+            0% {
+                opacity: 1;
+                filter: none;
+                transform: translateY(var(--rise-offset, 0px)) scale(1);
+            }
+            42% {
+                opacity: 0.62;
+                filter: blur(5px);
+                transform: translateY(calc(var(--rise-offset, 0px) + 34px)) scale(0.982);
+            }
+            100% {
+                opacity: 0;
+                filter: blur(14px);
+                transform: translateY(108px) scale(0.955);
             }
         }
 
@@ -2920,12 +2943,12 @@
 
         #contact .scene-inner[data-rise] {
             opacity: 0;
-            filter: blur(10px);
-            transform: translateY(76px) scale(0.975);
+            filter: blur(14px);
+            transform: translateY(108px) scale(0.955);
             transition:
-                opacity 860ms ease,
-                filter 980ms ease,
-                transform 1120ms cubic-bezier(0.16, 1, 0.3, 1);
+                opacity 1320ms ease,
+                filter 1500ms ease,
+                transform 1800ms cubic-bezier(0.16, 1, 0.3, 1);
             transition-delay: 0ms;
             pointer-events: none;
         }
@@ -2934,15 +2957,28 @@
             opacity: 1;
             filter: none;
             transform: translateY(var(--rise-offset, 0px)) scale(1);
-            animation: contactCardEnter 980ms cubic-bezier(0.16, 1, 0.3, 1) both;
+            animation: contactCardEnter 1680ms cubic-bezier(0.22, 0.72, 0.16, 1) both;
             pointer-events: auto;
         }
 
-        body.is-paging #contact.scene.is-current .scene-inner {
+        body.contact-entering.contact-ready.contact-reveal-armed #contact .scene-inner[data-rise].is-visible {
+            animation: contactCardEnter 1680ms cubic-bezier(0.22, 0.72, 0.16, 1) both;
+        }
+
+        body.contact-exiting #contact .scene-inner[data-rise] {
+            opacity: 0;
+            filter: blur(14px);
+            transform: translateY(108px) scale(0.955);
+            animation: contactCardExit 1250ms cubic-bezier(0.38, 0, 0.18, 1) both;
+            pointer-events: none !important;
+            transition: none;
+        }
+
+        body.is-paging:not(.contact-exiting) #contact.scene.is-current .scene-inner {
             animation: none;
             opacity: 0;
-            filter: blur(10px);
-            transform: translateY(76px) scale(0.975);
+            filter: blur(14px);
+            transform: translateY(108px) scale(0.955);
             pointer-events: none;
         }
 
@@ -3081,6 +3117,45 @@
 
             #contact .scene-inner {
                 translate: 0 0;
+            }
+
+            #contact .scene-inner[data-rise] {
+                opacity: 0;
+                filter: blur(14px);
+                transform: translateY(108px) scale(0.955);
+                transition:
+                    opacity 1320ms ease,
+                    filter 1500ms ease,
+                    transform 1800ms cubic-bezier(0.16, 1, 0.3, 1);
+                pointer-events: none;
+            }
+
+            body.contact-ready.contact-reveal-armed #contact .scene-inner[data-rise].is-visible {
+                opacity: 1;
+                filter: none;
+                transform: translateY(var(--rise-offset, 0px)) scale(1);
+                animation: contactCardEnter 1680ms cubic-bezier(0.22, 0.72, 0.16, 1) both;
+                pointer-events: auto;
+            }
+
+            body.contact-entering.contact-ready.contact-reveal-armed #contact .scene-inner[data-rise].is-visible {
+                animation: contactCardEnter 1680ms cubic-bezier(0.22, 0.72, 0.16, 1) both;
+            }
+
+            body.contact-exiting #contact .scene-inner[data-rise] {
+                opacity: 0;
+                filter: blur(14px);
+                transform: translateY(108px) scale(0.955);
+                animation: contactCardExit 1250ms cubic-bezier(0.38, 0, 0.18, 1) both;
+                pointer-events: none !important;
+                transition: none;
+            }
+
+            body.is-paging:not(.contact-exiting) #contact.scene.is-current .scene-inner {
+                opacity: 0;
+                filter: blur(14px);
+                transform: translateY(108px) scale(0.955);
+                pointer-events: none;
             }
 
             #home .scene-inner {
@@ -3367,7 +3442,7 @@
 </head>
 <body>
     <div class="video-background" aria-hidden="true">
-        <video class="is-active" autoplay muted playsinline preload="auto" data-scene-video="0" data-video-mode="transition">
+        <video autoplay muted playsinline preload="auto" data-scene-video="0" data-video-mode="transition">
             <source src="assets/scene-1.mp4" type="video/mp4">
         </video>
         <video muted playsinline preload="auto" data-scene-video="1" data-video-mode="transition">
@@ -3762,6 +3837,7 @@
         let cardContinuityTimer = 0;
         let cardPageExitTimer = 0;
         let contactRevealTimer = 0;
+        let contactMotionTimer = 0;
         let contactRevealArmed = false;
         let cursorAnimationFrame = 0;
         let cursorParticleTimer = 0;
@@ -4303,13 +4379,6 @@
         }
 
         function startInitialBackgroundVideo() {
-            const shouldPlayHomeTransition = currentSceneIndex === 0 && transitionVideos.length;
-
-            if (!shouldPlayHomeTransition) {
-                activateLoopVideo(currentSceneIndex, true);
-                return;
-            }
-
             const initialVideoIndex = getSceneVideoIndex(currentSceneIndex, transitionVideos);
             const initialVideo = transitionVideos[initialVideoIndex];
 
@@ -4583,11 +4652,48 @@
             document.body.classList.toggle("contact-reveal-armed", contactRevealArmed && isReady);
         }
 
+        function resetContactMotion() {
+            window.clearTimeout(contactMotionTimer);
+            document.body.classList.remove("contact-entering", "contact-exiting");
+        }
+
+        function playContactRevealAnimation() {
+            const contactPanel = contactScene?.querySelector(".scene-inner");
+            if (!contactPanel || reducedMotion.matches) return;
+
+            window.clearTimeout(contactMotionTimer);
+            document.body.classList.remove("contact-entering", "contact-exiting");
+            void contactPanel.offsetWidth;
+            document.body.classList.add("contact-entering");
+
+            contactMotionTimer = window.setTimeout(() => {
+                document.body.classList.remove("contact-entering");
+            }, 1820);
+        }
+
+        function startContactPageExit(index) {
+            if (scenes[index] !== contactScene || reducedMotion.matches) return 0;
+            const contactPanel = contactScene.querySelector(".scene-inner");
+            if (!contactPanel || !contactRevealArmed) return 0;
+
+            window.clearTimeout(contactMotionTimer);
+            document.body.classList.remove("contact-entering", "contact-exiting");
+            void contactPanel.offsetWidth;
+            document.body.classList.add("contact-exiting");
+
+            contactMotionTimer = window.setTimeout(() => {
+                document.body.classList.remove("contact-exiting");
+            }, 1340);
+
+            return 1250;
+        }
+
         function scheduleContactReveal(index, delay = 0, force = false) {
             window.clearTimeout(contactRevealTimer);
             if (scenes[index] !== contactScene) {
                 contactRevealTimer = 0;
                 contactRevealArmed = false;
+                resetContactMotion();
                 setContactRevealReady(false);
                 return;
             }
@@ -4601,6 +4707,7 @@
                 contactRevealTimer = 0;
                 contactRevealArmed = true;
                 setContactRevealReady(true);
+                playContactRevealAnimation();
             }, delay);
         }
 
@@ -4617,6 +4724,7 @@
             if (force) {
                 window.clearTimeout(pagingTimer);
                 window.clearTimeout(contactRevealTimer);
+                resetContactMotion();
                 window.cancelAnimationFrame(scrollAnimationFrame);
                 window.clearTimeout(cardPageExitTimer);
                 isPaging = false;
@@ -4627,17 +4735,24 @@
             }
 
             const previousSceneIndex = currentSceneIndex;
-            const exitDelay = startCardPageExit(previousSceneIndex);
+            const exitDelay = Math.max(startCardPageExit(previousSceneIndex), startContactPageExit(previousSceneIndex));
 
             isPaging = true;
             window.clearTimeout(contactRevealTimer);
             contactRevealTimer = 0;
-            contactRevealArmed = false;
-            setContactRevealReady(false);
+            if (scenes[previousSceneIndex] !== contactScene) {
+                contactRevealArmed = false;
+                setContactRevealReady(false);
+            }
             clearCardContinuity();
 
             window.setTimeout(() => {
                 setPagingMotion(direction);
+                if (scenes[previousSceneIndex] === contactScene) {
+                    contactRevealArmed = false;
+                    setContactRevealReady(false);
+                    resetContactMotion();
+                }
                 const nextMotionRoot = getCardMotionRoot(nextIndex);
                 if (nextMotionRoot && !reducedMotion.matches) {
                     nextMotionRoot.classList.add("is-card-prepping");
@@ -5041,11 +5156,14 @@
             });
         });
 
-        updatePagingState(getInitialSceneIndex());
+        const initialSceneIndex = getInitialSceneIndex();
+        currentSceneIndex = initialSceneIndex;
+        if (initialSceneIndex > 0) {
+            window.scrollTo(0, getSceneTop(initialSceneIndex));
+        }
+        updatePagingState(initialSceneIndex);
         scheduleContactReveal(currentSceneIndex);
         document.body.classList.add("motion-ready");
-        currentSceneIndex = getInitialSceneIndex();
-        setSceneClasses(currentSceneIndex);
         startInitialBackgroundVideo();
         renderScrollState();
     </script>

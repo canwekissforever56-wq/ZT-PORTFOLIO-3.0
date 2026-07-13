@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ZENG TING / PORTFOLIO</title>
+    <link rel="preconnect" href="https://video.zengting.xyz">
     <style>
         @font-face {
             font-family: "OrbitronLocal";
@@ -142,8 +143,8 @@
             z-index: 1;
             pointer-events: none;
             background:
-                linear-gradient(90deg, rgba(0, 0, 0, 0.28) 0%, rgba(0, 0, 0, 0.06) 48%, rgba(0, 0, 0, 0.14) 100%),
-                linear-gradient(180deg, rgba(0, 0, 0, 0.06) 0%, rgba(0, 0, 0, 0.02) 46%, rgba(0, 0, 0, 0.2) 100%);
+                linear-gradient(90deg, rgba(0, 0, 0, 0.26) 0%, rgba(0, 0, 0, 0.12) 26%, rgba(0, 0, 0, 0.025) 56%, rgba(0, 0, 0, 0.055) 100%),
+                linear-gradient(180deg, rgba(0, 0, 0, 0.045) 0%, rgba(0, 0, 0, 0.01) 52%, rgba(0, 0, 0, 0.11) 100%);
         }
 
         .video-shade::before {
@@ -649,7 +650,8 @@
             background: linear-gradient(96deg, #ffffff 0%, var(--accent) 44%, var(--glow) 76%, var(--violet) 100%);
             -webkit-background-clip: text;
             background-clip: text;
-            filter: drop-shadow(0 0 22px rgba(127, 207, 255, 0.28)) drop-shadow(0 0 34px rgba(167, 139, 255, 0.18));
+            text-shadow: none;
+            filter: drop-shadow(0 0 18px rgba(127, 207, 255, 0.2));
         }
 
         .hero-portfolio::after {
@@ -1066,12 +1068,12 @@
             0% {
                 opacity: 0;
                 transform: translateX(-50%) translate3d(var(--cap-deal-x, 0px), var(--cap-deal-y, 0vh), -150px) rotateX(14deg) rotateY(var(--cap-enter-yaw, 0deg)) rotateZ(var(--cap-enter-rotate, 0deg)) scale(0.72);
-                filter: blur(10px) saturate(1.16);
+                filter: saturate(1.08);
             }
             58% {
                 opacity: 1;
                 transform: var(--cap-pose) translate3d(0, -10px, 34px) scale(1.015);
-                filter: blur(1px) saturate(1.06);
+                filter: saturate(1.04);
             }
             100% {
                 opacity: 1;
@@ -1459,9 +1461,10 @@
         .language-card h4 {
             font-family: var(--font-ui);
             color: rgba(255, 255, 255, 0.95);
-            font-size: clamp(1.04rem, 1.25vw, 1.18rem);
+            font-size: clamp(0.96rem, 1.12vw, 1.12rem);
             font-weight: 700;
             line-height: 1.35;
+            white-space: nowrap;
         }
 
         .education-item p,
@@ -2007,6 +2010,10 @@
             animation-delay: calc(var(--cap-delay, 0ms) * 0.78);
         }
 
+        .capability-deck.is-visible .capability-card {
+            filter: none;
+        }
+
         .capability-deck.is-card-exiting .capability-card {
             animation: capabilityDealOut 720ms cubic-bezier(0.38, 0, 0.18, 1) both;
             animation-delay: calc(var(--cap-exit-delay, var(--cap-delay, 0ms)) * 0.52);
@@ -2529,9 +2536,9 @@
             z-index: 0;
             pointer-events: none;
             background:
-                radial-gradient(circle at 22% 48%, rgba(2, 6, 18, 0.34), rgba(2, 6, 18, 0.18) 30%, transparent 56%),
-                linear-gradient(90deg, rgba(2, 6, 18, 0.34) 0%, rgba(2, 6, 18, 0.2) 34%, rgba(2, 6, 18, 0.06) 66%, rgba(2, 6, 18, 0.1) 100%),
-                radial-gradient(ellipse at center, transparent 38%, rgba(0, 0, 0, 0.16) 100%);
+                radial-gradient(circle at 22% 48%, rgba(2, 6, 18, 0.32), rgba(2, 6, 18, 0.16) 28%, transparent 54%),
+                linear-gradient(90deg, rgba(2, 6, 18, 0.3) 0%, rgba(2, 6, 18, 0.14) 34%, rgba(2, 6, 18, 0.025) 66%, rgba(2, 6, 18, 0.045) 100%),
+                radial-gradient(ellipse at center, transparent 46%, rgba(0, 0, 0, 0.07) 100%);
         }
 
         .scene::before {
@@ -2587,9 +2594,9 @@
 
         #home::after {
             background:
-                radial-gradient(circle at 30% 46%, rgba(2, 6, 18, 0.38), rgba(2, 6, 18, 0.2) 34%, transparent 58%),
-                linear-gradient(90deg, rgba(2, 6, 18, 0.42) 0%, rgba(2, 6, 18, 0.28) 36%, rgba(2, 6, 18, 0.06) 68%, rgba(2, 6, 18, 0.08) 100%),
-                radial-gradient(ellipse at center, transparent 40%, rgba(0, 0, 0, 0.14) 100%);
+                radial-gradient(circle at 30% 46%, rgba(2, 6, 18, 0.38), rgba(2, 6, 18, 0.2) 32%, transparent 58%),
+                linear-gradient(90deg, rgba(2, 6, 18, 0.38) 0%, rgba(2, 6, 18, 0.22) 34%, rgba(2, 6, 18, 0.025) 68%, rgba(2, 6, 18, 0.035) 100%),
+                radial-gradient(ellipse at center, transparent 48%, rgba(0, 0, 0, 0.06) 100%);
         }
 
         #home .scene-inner {
@@ -2634,9 +2641,9 @@
 
         #about::after {
             background:
-                radial-gradient(circle at 28% 44%, rgba(2, 6, 18, 0.36), rgba(2, 6, 18, 0.18) 34%, transparent 58%),
-                linear-gradient(90deg, rgba(2, 6, 18, 0.44) 0%, rgba(2, 6, 18, 0.24) 30%, rgba(2, 6, 18, 0.04) 62%, rgba(2, 6, 18, 0) 100%),
-                radial-gradient(ellipse at center, transparent 42%, rgba(0, 0, 0, 0.14) 100%);
+                radial-gradient(circle at 28% 44%, rgba(2, 6, 18, 0.34), rgba(2, 6, 18, 0.16) 32%, transparent 58%),
+                linear-gradient(90deg, rgba(2, 6, 18, 0.38) 0%, rgba(2, 6, 18, 0.18) 30%, rgba(2, 6, 18, 0.02) 62%, rgba(2, 6, 18, 0) 100%),
+                radial-gradient(ellipse at center, transparent 50%, rgba(0, 0, 0, 0.055) 100%);
         }
 
         #about .scene-inner {
@@ -2725,9 +2732,9 @@
 
         #capabilities::after {
             background:
-                radial-gradient(ellipse at 50% 76%, rgba(2, 6, 18, 0.08), rgba(2, 6, 18, 0.12) 36%, transparent 62%),
-                linear-gradient(90deg, rgba(2, 6, 18, 0.3) 0%, rgba(2, 6, 18, 0.2) 34%, rgba(2, 6, 18, 0.08) 66%, rgba(2, 6, 18, 0.12) 100%),
-                radial-gradient(ellipse at center, transparent 42%, rgba(0, 0, 0, 0.14) 100%);
+                radial-gradient(ellipse at 50% 76%, rgba(2, 6, 18, 0.06), rgba(2, 6, 18, 0.09) 34%, transparent 62%),
+                linear-gradient(90deg, rgba(2, 6, 18, 0.18) 0%, rgba(2, 6, 18, 0.12) 34%, rgba(2, 6, 18, 0.035) 66%, rgba(2, 6, 18, 0.055) 100%),
+                radial-gradient(ellipse at center, transparent 50%, rgba(0, 0, 0, 0.055) 100%);
         }
 
         .capability-layout {
@@ -2831,9 +2838,9 @@
 
         #work::after {
             background:
-                radial-gradient(ellipse at 62% 54%, rgba(2, 6, 18, 0.08), rgba(2, 6, 18, 0.12) 34%, transparent 56%),
-                linear-gradient(90deg, rgba(2, 6, 18, 0.3) 0%, rgba(2, 6, 18, 0.16) 38%, rgba(2, 6, 18, 0.08) 70%, rgba(2, 6, 18, 0.12) 100%),
-                radial-gradient(ellipse at center, transparent 40%, rgba(0, 0, 0, 0.14) 100%);
+                radial-gradient(ellipse at 62% 54%, rgba(2, 6, 18, 0.06), rgba(2, 6, 18, 0.08) 32%, transparent 56%),
+                linear-gradient(90deg, rgba(2, 6, 18, 0.18) 0%, rgba(2, 6, 18, 0.1) 38%, rgba(2, 6, 18, 0.035) 70%, rgba(2, 6, 18, 0.055) 100%),
+                radial-gradient(ellipse at center, transparent 50%, rgba(0, 0, 0, 0.055) 100%);
         }
 
         #work {
@@ -2918,9 +2925,9 @@
 
         #contact::after {
             background:
-                radial-gradient(circle at 68% 58%, rgba(2, 6, 18, 0.34), rgba(2, 6, 18, 0.18) 32%, transparent 56%),
-                linear-gradient(90deg, rgba(2, 6, 18, 0.04) 0%, rgba(2, 6, 18, 0.03) 34%, rgba(2, 6, 18, 0.12) 62%, rgba(2, 6, 18, 0.24) 100%),
-                radial-gradient(ellipse at center, transparent 42%, rgba(0, 0, 0, 0.14) 100%);
+                radial-gradient(circle at 68% 58%, rgba(2, 6, 18, 0.32), rgba(2, 6, 18, 0.16) 30%, transparent 56%),
+                linear-gradient(90deg, rgba(2, 6, 18, 0.015) 0%, rgba(2, 6, 18, 0.015) 34%, rgba(2, 6, 18, 0.08) 62%, rgba(2, 6, 18, 0.2) 100%),
+                radial-gradient(ellipse at center, transparent 50%, rgba(0, 0, 0, 0.055) 100%);
         }
 
         #contact .scene-inner {
@@ -3040,7 +3047,7 @@
             }
 
             .video-background video {
-                transform: none;
+                transform: scale(1.02);
             }
 
             body.motion-ready .scene-inner,
@@ -3102,8 +3109,8 @@
 
             .scene::after {
                 background:
-                    linear-gradient(180deg, rgba(2, 6, 18, 0.4), rgba(2, 6, 18, 0.24) 44%, rgba(2, 6, 18, 0.34)),
-                    radial-gradient(ellipse at center, transparent 34%, rgba(0, 0, 0, 0.22) 100%);
+                    linear-gradient(180deg, rgba(2, 6, 18, 0.28), rgba(2, 6, 18, 0.14) 44%, rgba(2, 6, 18, 0.2)),
+                    radial-gradient(ellipse at center, transparent 42%, rgba(0, 0, 0, 0.08) 100%);
             }
 
             #home .scene-inner,
@@ -3445,31 +3452,31 @@
         <video autoplay muted playsinline preload="auto" data-scene-video="0" data-video-mode="transition">
             <source src="https://video.zengting.xyz/scene-1.mp4" type="video/mp4">
         </video>
-        <video muted playsinline preload="auto" data-scene-video="1" data-video-mode="transition">
+        <video muted playsinline preload="metadata" data-scene-video="1" data-video-mode="transition">
             <source src="https://video.zengting.xyz/scene-2.mp4" type="video/mp4">
         </video>
-        <video muted playsinline preload="auto" data-scene-video="2" data-video-mode="transition">
+        <video muted playsinline preload="metadata" data-scene-video="2" data-video-mode="transition">
             <source src="https://video.zengting.xyz/scene-3.mp4" type="video/mp4">
         </video>
-        <video muted playsinline preload="auto" data-scene-video="3" data-video-mode="transition">
+        <video muted playsinline preload="metadata" data-scene-video="3" data-video-mode="transition">
             <source src="https://video.zengting.xyz/scene-4.mp4" type="video/mp4">
         </video>
-        <video muted playsinline preload="auto" data-scene-video="4" data-video-mode="transition">
+        <video muted playsinline preload="metadata" data-scene-video="4" data-video-mode="transition">
             <source src="https://video.zengting.xyz/scene-5.mp4" type="video/mp4">
         </video>
-        <video muted playsinline preload="auto" data-scene-video="0" data-video-mode="loop" loop>
+        <video muted playsinline preload="metadata" data-scene-video="0" data-video-mode="loop" loop>
             <source src="https://video.zengting.xyz/loop-1.mp4" type="video/mp4">
         </video>
-        <video muted playsinline preload="auto" data-scene-video="1" data-video-mode="loop" loop>
+        <video muted playsinline preload="metadata" data-scene-video="1" data-video-mode="loop" loop>
             <source src="https://video.zengting.xyz/loop-2.mp4" type="video/mp4">
         </video>
-        <video muted playsinline preload="auto" data-scene-video="2" data-video-mode="loop" loop>
+        <video muted playsinline preload="metadata" data-scene-video="2" data-video-mode="loop" loop>
             <source src="https://video.zengting.xyz/loop-3.mp4" type="video/mp4">
         </video>
-        <video muted playsinline preload="auto" data-scene-video="3" data-video-mode="loop" loop>
+        <video muted playsinline preload="metadata" data-scene-video="3" data-video-mode="loop" loop>
             <source src="https://video.zengting.xyz/loop-4.mp4" type="video/mp4">
         </video>
-        <video muted playsinline preload="auto" data-scene-video="4" data-video-mode="loop" loop>
+        <video muted playsinline preload="metadata" data-scene-video="4" data-video-mode="loop" loop>
             <source src="https://video.zengting.xyz/loop-5.mp4" type="video/mp4">
         </video>
     </div>
@@ -3561,15 +3568,19 @@
                     </section>
 
                     <section class="about-card" data-rise>
-                        <h3>Academic Honors</h3>
-                        <ul class="honor-list">
-                            <li>“两岸新锐设计竞赛·华灿奖” 总赛全国二等奖</li>
-                            <li>UXDA 国际用户体验创新大赛 全国三等奖</li>
-                            <li>未来设计师·全国高校数字艺术设计大赛 赛区一等奖</li>
-                            <li>蓝桥杯信息技术专业人才大赛 二等奖</li>
-                            <li>中国好创意大赛 二等奖</li>
-                            <li>广东工业大学研究生奖学金 一等奖</li>
-                        </ul>
+                        <h3>Internship Experience</h3>
+                        <div class="education-list">
+                            <div class="education-item">
+                                <h4>北京智谱华章科技股份有限公司</h4>
+                                <p>UX设计实习生 / AI智能体产品交互设计，负责用户任务流程、高保真界面与交互规范建设。</p>
+                                <span class="education-date">2025.08 - 2026.01</span>
+                            </div>
+                            <div class="education-item">
+                                <h4>广州汇量科技有限公司</h4>
+                                <p>UI设计实习生 / 高转化游戏互动广告界面与动效设计，参与视觉策略、AIGC资源生成与落地验收。</p>
+                                <span class="education-date">2025.03 - 2025.06</span>
+                            </div>
+                        </div>
                     </section>
 
                     <section class="about-card" data-rise>
@@ -3582,10 +3593,10 @@
                     </section>
 
                     <section class="about-card" data-rise>
-                        <h3>Languages</h3>
+                        <h3>Project Experience</h3>
                         <div class="language-card">
-                            <h4>English</h4>
-                            <p>Good command of listening, speaking, reading, and writing.</p>
+                            <h4>AI辅助妇产科医疗诊断系统设计</h4>
+                            <p>负责用户研究、需求挖掘与体验设计，将访谈、问卷和数据分析转化为信息架构、任务流程与高保真方案，项目获UXDA铜奖。</p>
                         </div>
                     </section>
                 </div>
@@ -3857,6 +3868,7 @@
         let activePdfDocument = null;
         const LOOP_ENTRY_OFFSET = 0.24;
         const VIDEO_CROSSFADE_MS = 760;
+        const preparedTransitionVideos = new WeakSet();
         const preparedLoopVideos = new WeakSet();
         const earlyLoopSwitchVideos = new WeakSet();
         const inactiveVideoPauseTimers = new WeakMap();
@@ -4261,6 +4273,17 @@
             playbackRetryTimers.set(video, retryTimer);
         }
 
+        function prepareTransitionVideo(index) {
+            const transitionVideoIndex = getSceneVideoIndex(index, transitionVideos);
+            const transitionVideo = transitionVideos[transitionVideoIndex];
+            if (!transitionVideo || preparedTransitionVideos.has(transitionVideo)) return;
+
+            preparedTransitionVideos.add(transitionVideo);
+            prepareVideoForInlinePlayback(transitionVideo);
+            transitionVideo.preload = "auto";
+            transitionVideo.load();
+        }
+
         function prepareLoopVideo(index) {
             const loopVideoIndex = getSceneVideoIndex(index, loopVideos);
             const loopVideo = loopVideos[loopVideoIndex];
@@ -4287,6 +4310,20 @@
             }
         }
 
+        function prepareSceneVideos(index) {
+            if (index < 0 || index >= scenes.length) return;
+            prepareTransitionVideo(index);
+            prepareLoopVideo(index);
+        }
+
+        function prepareNearbySceneVideos(index) {
+            prepareSceneVideos(index);
+            window.setTimeout(() => {
+                prepareSceneVideos(index + 1);
+                prepareSceneVideos(index - 1);
+            }, 420);
+        }
+
         function switchTransitionToLoopEarly(video) {
             if (video.dataset.videoMode !== "transition" || !video.classList.contains("is-active")) return;
             if (earlyLoopSwitchVideos.has(video) || !Number.isFinite(video.duration) || video.duration <= 0) return;
@@ -4296,10 +4333,11 @@
 
             const loopVideoIndex = getSceneVideoIndex(currentSceneIndex, loopVideos);
             const loopVideo = loopVideos[loopVideoIndex];
-            if (!loopVideo || loopVideo.readyState < 2) return;
 
-            earlyLoopSwitchVideos.add(video);
-            activateLoopVideo(currentSceneIndex, true);
+            if (loopVideo && loopVideo.readyState >= 2) {
+                earlyLoopSwitchVideos.add(video);
+                activateLoopVideo(currentSceneIndex, true);
+            }
         }
 
         function playVideo(video, shouldReset = true, startTime = 0) {
@@ -4366,6 +4404,33 @@
             activateBackgroundVideo(index, "loop", shouldPlay);
         }
 
+        function activateLoopVideoWhenReady(index, shouldPlay = true) {
+            const loopVideoIndex = getSceneVideoIndex(index, loopVideos);
+            const loopVideo = loopVideos[loopVideoIndex];
+
+            if (!loopVideo) {
+                activateLoopVideo(index, shouldPlay);
+                return;
+            }
+
+            prepareLoopVideo(index);
+
+            if (loopVideo.readyState >= 2) {
+                activateLoopVideo(index, shouldPlay);
+                return;
+            }
+
+            const switchWhenReady = () => {
+                loopVideo.removeEventListener("loadeddata", switchWhenReady);
+                loopVideo.removeEventListener("canplay", switchWhenReady);
+                if (currentSceneIndex !== index) return;
+                activateLoopVideo(index, shouldPlay);
+            };
+
+            loopVideo.addEventListener("loadeddata", switchWhenReady);
+            loopVideo.addEventListener("canplay", switchWhenReady);
+        }
+
         function replayActiveBackgroundVideo() {
             const activeVideo = videos.find((video) => video.classList.contains("is-active"));
             if (activeVideo) {
@@ -4375,7 +4440,7 @@
                 return;
             }
 
-            activateLoopVideo(currentSceneIndex, true);
+            activateLoopVideoWhenReady(currentSceneIndex, true);
         }
 
         function startInitialBackgroundVideo() {
@@ -4643,6 +4708,7 @@
             setSceneClasses(currentSceneIndex);
             replaySceneTypewriters(currentSceneIndex);
             updateCardFlipLoop();
+            prepareNearbySceneVideos(currentSceneIndex);
             nav.classList.toggle("is-scrolled", currentSceneIndex > 0);
             document.body.classList.toggle("has-scrolled", currentSceneIndex > 0);
         }
@@ -4779,11 +4845,16 @@
             const scrollTop = window.scrollY || document.documentElement.scrollTop;
 
             if (!isPaging) {
-                currentSceneIndex = getNearestSceneIndex();
+                const nearestSceneIndex = getNearestSceneIndex();
+                const hasSceneChanged = nearestSceneIndex !== currentSceneIndex;
+                currentSceneIndex = nearestSceneIndex;
                 progress.style.transform = `scaleX(${getSceneProgress(currentSceneIndex)})`;
                 setSceneClasses(currentSceneIndex);
                 replaySceneTypewriters(currentSceneIndex);
                 updateCardFlipLoop();
+                if (hasSceneChanged) {
+                    activateVideo(currentSceneIndex, true);
+                }
             }
 
             nav.classList.toggle("is-scrolled", scrollTop > 28);
@@ -5144,10 +5215,11 @@
                 schedulePlaybackRetry(video, 80);
             });
             video.addEventListener("ended", () => {
-                video.pause();
                 if (video.dataset.videoMode === "transition" && video.classList.contains("is-active")) {
-                    activateLoopVideo(currentSceneIndex, true);
+                    activateLoopVideoWhenReady(currentSceneIndex, true);
+                    return;
                 }
+                video.pause();
             });
             video.addEventListener("error", () => {
                 if (video.dataset.videoMode === "loop" && video.classList.contains("is-active")) {
@@ -5165,6 +5237,7 @@
         scheduleContactReveal(currentSceneIndex);
         document.body.classList.add("motion-ready");
         startInitialBackgroundVideo();
+        prepareNearbySceneVideos(currentSceneIndex);
         renderScrollState();
     </script>
 </body>

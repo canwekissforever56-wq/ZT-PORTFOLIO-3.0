@@ -1196,6 +1196,9 @@
                 rgba(255, 255, 255, 0.06);
             backdrop-filter: blur(16px);
             box-shadow: 0 24px 80px rgba(0, 0, 0, 0.28);
+            perspective: 1200px;
+            transform-style: preserve-3d;
+            -webkit-transform-style: preserve-3d;
         }
 
         .identity-card::before {
@@ -1339,6 +1342,7 @@
             height: 100%;
             min-height: inherit;
             transform-style: preserve-3d;
+            -webkit-transform-style: preserve-3d;
             transform:
                 translateY(var(--gravity-press))
                 rotateX(var(--gravity-rotate-x))
@@ -1368,10 +1372,15 @@
             box-shadow: 0 24px 80px rgba(0, 0, 0, 0.24), 0 0 28px rgba(139, 214, 255, 0.08);
             backdrop-filter: blur(14px);
             backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            transform-style: preserve-3d;
+            -webkit-transform-style: preserve-3d;
+            transform: rotateY(0deg) translateZ(0.1px);
         }
 
         .identity-card-front {
             padding: 24px;
+            transform: rotateY(0deg) translateZ(0.1px);
         }
 
         .identity-watermark {
@@ -1409,7 +1418,7 @@
 
         .gravity-card-back {
             padding: 0;
-            transform: rotateY(180deg);
+            transform: rotateY(180deg) translateZ(0.1px);
             background: rgba(5, 8, 15, 0.86);
         }
 

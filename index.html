@@ -9,7 +9,7 @@
         @font-face {
             font-family: "OrbitronLocal";
             src: url("assets/orbitron-700.ttf") format("truetype");
-            font-weight: 700;
+            font-weight: 500;
             font-style: normal;
             font-display: swap;
         }
@@ -2255,6 +2255,83 @@
             line-height: 1.7;
         }
 
+        .portfolio-view-cta {
+            position: absolute;
+            right: clamp(12px, 1.2vw, 16px);
+            bottom: clamp(12px, 1.2vw, 16px);
+            z-index: 2;
+            width: clamp(86px, 7.2vw, 98px);
+            height: clamp(30px, 2.8vw, 36px);
+            padding: 0 9px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            white-space: nowrap;
+            border: 0;
+            border-radius: 999px;
+            color: #ffffff;
+            background: rgba(0, 0, 0, 0.08);
+            border: 0;
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+            backdrop-filter: none;
+            font-family: var(--font-ui);
+            font-size: clamp(0.82rem, 0.82vw, 0.9rem);
+            font-weight: 400;
+            line-height: 1;
+            letter-spacing: 0;
+            opacity: 0;
+            transform: translate3d(8px, 6px, 32px) scale(0.96);
+            transition: opacity 220ms ease, transform 240ms var(--ease-out), border-color 180ms ease, background 180ms ease;
+            pointer-events: none;
+        }
+
+        .portfolio-view-cta::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            padding: 0.6px;
+            border-radius: inherit;
+            background: linear-gradient(110deg, rgba(139, 214, 255, 0.78), rgba(167, 139, 255, 0.72));
+            opacity: 0.82;
+            -webkit-mask:
+                linear-gradient(#000 0 0) content-box,
+                linear-gradient(#000 0 0);
+            -webkit-mask-composite: xor;
+            mask:
+                linear-gradient(#000 0 0) content-box,
+                linear-gradient(#000 0 0);
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+
+        .portfolio-view-cta svg {
+            width: 13px;
+            height: 13px;
+            flex: 0 0 auto;
+            display: block;
+            color: #ffffff;
+            opacity: 1;
+            stroke-width: 2.4;
+            transform: translateY(0.5px);
+        }
+
+        .portfolio-view-cta-label {
+            display: block;
+            flex: 0 0 auto;
+            color: #ffffff;
+            line-height: 1;
+            white-space: nowrap;
+            transform: translateY(0.5px);
+        }
+
+        .portfolio-item:hover .portfolio-view-cta,
+        .portfolio-item:focus-visible .portfolio-view-cta {
+            opacity: 1;
+            transform: translate3d(0, 0, 72px) scale(1);
+            background: rgba(0, 0, 0, 0.08);
+        }
+
         .portfolio-hint {
             margin-top: clamp(30px, 5vh, 54px);
             color: transparent;
@@ -2368,6 +2445,7 @@
         }
 
         .pdf-close {
+            position: relative;
             width: 32px;
             height: 32px;
             flex: 0 0 auto;
@@ -2377,10 +2455,31 @@
             border-radius: 50%;
             background: rgba(255, 255, 255, 0.08);
             color: #fff;
-            font-size: 1.5rem;
-            line-height: 1;
+            font-size: 0;
+            line-height: 0;
             cursor: pointer;
             transition: background 160ms ease, border-color 160ms ease, transform 160ms ease;
+        }
+
+        .pdf-close::before,
+        .pdf-close::after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 13px;
+            height: 2px;
+            border-radius: 999px;
+            background: currentColor;
+            transform-origin: center;
+        }
+
+        .pdf-close::before {
+            transform: translate(-50%, -50%) rotate(45deg);
+        }
+
+        .pdf-close::after {
+            transform: translate(-50%, -50%) rotate(-45deg);
         }
 
         .pdf-close:hover,
@@ -3341,6 +3440,19 @@
                 min-height: 230px;
             }
 
+            .portfolio-view-cta {
+                right: 12px;
+                bottom: 12px;
+                width: 98px;
+                height: 36px;
+                padding: 0 9px;
+                gap: 4px;
+                font-size: 0.9rem;
+                opacity: 1;
+                transform: translate3d(0, 0, 0) scale(0.9);
+                transform-origin: right bottom;
+            }
+
             #work .portfolio-hint {
                 text-align: center;
                 width: 100%;
@@ -3878,6 +3990,31 @@
                         <p class="portfolio-description">
                             从用户洞察到界面落地
                         </p>
+                        <span class="portfolio-view-cta" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+                                <path d="M7 17h5" stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M7 17v-5" stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M12 12 18 6" stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M14 6h4v4" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                            <span class="portfolio-view-cta-label">查看作品</span>
+                        </span>
+                    </article>
+                    <article class="portfolio-item" data-pdf="pdf/b_end_ai_platform.pdf" data-pdf-title="B端AI平台设计" data-preview-dir="pdf-pages/b_end_ai_platform" data-preview-pages="23" data-preview-pad="2" role="button" tabindex="0">
+                        <p class="portfolio-category">AI PRODUCT DESIGN</p>
+                        <h3 class="portfolio-title">B端智能化效率工具设计</h3>
+                        <p class="portfolio-description">
+                            设计 AI 辅助工作流
+                        </p>
+                        <span class="portfolio-view-cta" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+                                <path d="M7 17h5" stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M7 17v-5" stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M12 12 18 6" stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M14 6h4v4" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                            <span class="portfolio-view-cta-label">查看作品</span>
+                        </span>
                     </article>
                     <article class="portfolio-item" data-pdf="pdf/ui_design_guidelines.pdf" data-pdf-title="游戏化视觉界面设计" data-preview-dir="pdf-pages/ui_design_guidelines" data-preview-pages="9" data-preview-pad="1" data-video="https://video.zengting.xyz/game-ui-demo.mp4" data-video-title="游戏 UI Demo" role="button" tabindex="0">
                         <p class="portfolio-category">GAME UI DESIGN</p>
@@ -3885,13 +4022,15 @@
                         <p class="portfolio-description">
                             构建风格统一的游戏 UI
                         </p>
-                    </article>
-                    <article class="portfolio-item" data-pdf="pdf/b_end_ai_platform.pdf" data-pdf-title="B端AI平台设计" data-preview-dir="pdf-pages/b_end_ai_platform" data-preview-pages="23" data-preview-pad="2" role="button" tabindex="0">
-                        <p class="portfolio-category">AI PRODUCT DESIGN</p>
-                        <h3 class="portfolio-title">智能化效率工具设计</h3>
-                        <p class="portfolio-description">
-                            设计 AI 辅助工作流
-                        </p>
+                        <span class="portfolio-view-cta" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+                                <path d="M7 17h5" stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M7 17v-5" stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M12 12 18 6" stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M14 6h4v4" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                            <span class="portfolio-view-cta-label">查看作品</span>
+                        </span>
                     </article>
                     <article class="portfolio-item" data-pdf="pdf/ai_coding_product.pdf" data-pdf-title="AI 辅助设计与实现" data-preview-dir="pdf-pages/ai_coding_product" data-preview-pages="2" data-preview-pad="1" role="button" tabindex="0">
                         <p class="portfolio-category">AI WORKFLOW</p>
@@ -3899,6 +4038,15 @@
                         <p class="portfolio-description">
                             从概念到可运行原型
                         </p>
+                        <span class="portfolio-view-cta" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+                                <path d="M7 17h5" stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M7 17v-5" stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M12 12 18 6" stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M14 6h4v4" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                            <span class="portfolio-view-cta-label">查看作品</span>
+                        </span>
                     </article>
                 </div>
                 <p class="portfolio-hint" data-rise>点击卡片查看作品</p>

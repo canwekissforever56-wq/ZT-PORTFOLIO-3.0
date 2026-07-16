@@ -2315,8 +2315,8 @@
         }
 
         .pdf-panel {
-            width: min(1120px, 100%);
-            height: min(84vh, 860px);
+            width: min(1180px, 100%);
+            height: min(90vh, 920px);
             display: flex;
             flex-direction: column;
             overflow: hidden;
@@ -2336,30 +2336,31 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 18px;
-            padding: 16px 18px 14px;
+            gap: 12px;
+            padding: 9px 14px 8px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.14);
         }
 
         .pdf-kicker {
             font-family: var(--font-ui);
             color: var(--accent);
-            font-size: 0.72rem;
+            font-size: 0.62rem;
             font-weight: 800;
             letter-spacing: 0.16em;
             text-transform: uppercase;
         }
 
         #pdfTitle {
-            margin-top: 4px;
+            margin-top: 2px;
             font-family: var(--font-display);
-            font-size: 1.15rem;
+            font-size: 0.94rem;
             font-weight: 700;
+            line-height: 1.18;
         }
 
         .pdf-close {
-            width: 40px;
-            height: 40px;
+            width: 32px;
+            height: 32px;
             flex: 0 0 auto;
             display: grid;
             place-items: center;
@@ -2386,7 +2387,7 @@
             min-height: 0;
             overflow-y: auto;
             overscroll-behavior: contain;
-            padding: 22px clamp(14px, 3vw, 34px) 34px;
+            padding: 10px clamp(10px, 1.8vw, 20px) 14px;
             background:
                 linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02)),
                 rgba(12, 16, 20, 0.52);
@@ -2396,6 +2397,21 @@
             display: grid;
             justify-items: center;
             gap: 18px;
+        }
+
+        .pdf-preview-page {
+            width: min(100%, 980px);
+            display: block;
+            border-radius: 4px;
+            background: #fff;
+            box-shadow: 0 18px 54px rgba(0, 0, 0, 0.34);
+        }
+
+        .pdf-preview-page img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: inherit;
         }
 
         .pdf-video-block {
@@ -3732,28 +3748,28 @@
                     <h2 class="section-title">作品展示</h2>
                 </div>
                 <div class="portfolio-grid" data-rise>
-                    <article class="portfolio-item" data-pdf="pdf/same_freq_app.pdf" data-pdf-title="App及用户体验设计" role="button" tabindex="0">
+                    <article class="portfolio-item" data-pdf="pdf/same_freq_app.pdf" data-pdf-title="App及用户体验设计" data-preview-dir="pdf-pages/same_freq_app" data-preview-pages="21" data-preview-pad="2" role="button" tabindex="0">
                         <p class="portfolio-category">EXPERIENCE DESIGN</p>
                         <h3 class="portfolio-title">体验驱动的产品设计</h3>
                         <p class="portfolio-description">
                             从用户洞察到界面落地
                         </p>
                     </article>
-                    <article class="portfolio-item" data-pdf="pdf/ui_design_guidelines.pdf" data-pdf-title="游戏化视觉界面设计" data-video="https://video.zengting.xyz/game-ui-demo.mp4" data-video-title="游戏 UI Demo" role="button" tabindex="0">
+                    <article class="portfolio-item" data-pdf="pdf/ui_design_guidelines.pdf" data-pdf-title="游戏化视觉界面设计" data-preview-dir="pdf-pages/ui_design_guidelines" data-preview-pages="9" data-preview-pad="1" data-video="https://video.zengting.xyz/game-ui-demo.mp4" data-video-title="游戏 UI Demo" role="button" tabindex="0">
                         <p class="portfolio-category">GAME UI DESIGN</p>
                         <h3 class="portfolio-title">游戏化视觉界面设计</h3>
                         <p class="portfolio-description">
                             构建风格统一的游戏 UI
                         </p>
                     </article>
-                    <article class="portfolio-item" data-pdf="pdf/b_end_ai_platform.pdf" data-pdf-title="B端AI平台设计" role="button" tabindex="0">
+                    <article class="portfolio-item" data-pdf="pdf/b_end_ai_platform.pdf" data-pdf-title="B端AI平台设计" data-preview-dir="pdf-pages/b_end_ai_platform" data-preview-pages="23" data-preview-pad="2" role="button" tabindex="0">
                         <p class="portfolio-category">AI PRODUCT DESIGN</p>
                         <h3 class="portfolio-title">智能化效率工具设计</h3>
                         <p class="portfolio-description">
                             设计 AI 辅助工作流
                         </p>
                     </article>
-                    <article class="portfolio-item" data-pdf="pdf/ai_coding_product.pdf" data-pdf-title="AI 辅助设计与实现" role="button" tabindex="0">
+                    <article class="portfolio-item" data-pdf="pdf/ai_coding_product.pdf" data-pdf-title="AI 辅助设计与实现" data-preview-dir="pdf-pages/ai_coding_product" data-preview-pages="2" data-preview-pad="1" role="button" tabindex="0">
                         <p class="portfolio-category">AI WORKFLOW</p>
                         <h3 class="portfolio-title">AI 辅助设计与实现</h3>
                         <p class="portfolio-description">
@@ -4905,6 +4921,39 @@
             pdfPages.replaceChildren(status);
         }
 
+        function showPdfPreview(source, previewDir, pageCount, padLength = 1) {
+            if (!pdfPages) return;
+
+            const count = Number.parseInt(pageCount, 10);
+            if (!previewDir || !Number.isFinite(count) || count <= 0) {
+                showPdfStatus("PDF preview unavailable.");
+                return;
+            }
+
+            const fragment = document.createDocumentFragment();
+
+            for (let pageNumber = 1; pageNumber <= count; pageNumber += 1) {
+                const pageElement = document.createElement("section");
+                pageElement.className = "pdf-preview-page";
+                pageElement.setAttribute("aria-label", `Page ${pageNumber}`);
+
+                const image = document.createElement("img");
+                const fileNumber = String(pageNumber).padStart(Number.parseInt(padLength, 10) || 1, "0");
+                image.src = `${previewDir}/page-${fileNumber}.jpg`;
+                image.alt = `${pdfTitle?.textContent || "Project PDF"} page ${pageNumber}`;
+                image.loading = pageNumber <= 2 ? "eager" : "lazy";
+                image.decoding = "async";
+                image.addEventListener("error", () => {
+                    showPdfStatus("PDF preview failed.");
+                }, { once: true });
+
+                pageElement.appendChild(image);
+                fragment.appendChild(pageElement);
+            }
+
+            pdfPages.replaceChildren(fragment);
+        }
+
         function resetPdfVideo() {
             if (!pdfDemoVideo || !pdfVideoBlock) return;
 
@@ -4979,7 +5028,7 @@
             }
         }
 
-        async function openPdfModal(source, title, videoSource, videoTitle) {
+        async function openPdfModal(source, title, videoSource, videoTitle, previewDir, previewPages, previewPad) {
             if (!pdfModal || !pdfPages || !pdfTitle || !source) return;
 
             lastFocusedPdfTrigger = document.activeElement;
@@ -4991,36 +5040,9 @@
             activePdfToken += 1;
             const token = activePdfToken;
             configurePdfVideo(videoSource, videoTitle);
-            showPdfStatus("Loading...");
+            showPdfPreview(source, previewDir, previewPages, previewPad);
             if (pdfScroll) pdfScroll.scrollTop = 0;
             focusElement(pdfClose);
-
-            try {
-                if (activePdfLoadingTask) {
-                    activePdfLoadingTask.destroy();
-                }
-                if (activePdfDocument) {
-                    activePdfDocument.destroy();
-                    activePdfDocument = null;
-                }
-
-                const pdfRenderer = await getPdfRenderer();
-                if (token !== activePdfToken) return;
-
-                activePdfLoadingTask = pdfRenderer.getDocument({ url: source });
-                const pdfDocument = await activePdfLoadingTask.promise;
-                if (token !== activePdfToken) return;
-
-                activePdfDocument = pdfDocument;
-                await renderPdfPages(pdfDocument, token);
-                activePdfLoadingTask = null;
-            } catch (error) {
-                if (token !== activePdfToken) return;
-                showPdfStatus("PDF loading failed.");
-                activePdfLoadingTask = null;
-                activePdfDocument = null;
-                console.error(error);
-            }
         }
 
         function closePdfModal() {
@@ -5158,14 +5180,14 @@
 
             item.addEventListener("click", () => {
                 const title = item.dataset.pdfTitle || item.querySelector(".portfolio-title")?.textContent?.trim();
-                openPdfModal(item.dataset.pdf, title, item.dataset.video, item.dataset.videoTitle);
+                openPdfModal(item.dataset.pdf, title, item.dataset.video, item.dataset.videoTitle, item.dataset.previewDir, item.dataset.previewPages, item.dataset.previewPad);
             });
 
             item.addEventListener("keydown", (event) => {
                 if (event.key !== "Enter" && event.key !== " ") return;
                 event.preventDefault();
                 const title = item.dataset.pdfTitle || item.querySelector(".portfolio-title")?.textContent?.trim();
-                openPdfModal(item.dataset.pdf, title, item.dataset.video, item.dataset.videoTitle);
+                openPdfModal(item.dataset.pdf, title, item.dataset.video, item.dataset.videoTitle, item.dataset.previewDir, item.dataset.previewPages, item.dataset.previewPad);
             });
         });
 

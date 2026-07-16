@@ -705,7 +705,7 @@
             content: "";
             width: 0.075em;
             height: 0.72em;
-            margin-left: 0.02em;
+            margin-left: 0.005em;
             border-radius: 999px;
             background: var(--glow);
             box-shadow: 0 0 16px rgba(167, 139, 255, 0.92), 0 0 34px rgba(127, 207, 255, 0.5);
@@ -2636,7 +2636,61 @@
         }
 
         #home .hero-title {
-            max-width: min(720px, 54vw);
+            max-width: min(880px, 64vw);
+            gap: clamp(6px, 1.1vw, 18px);
+            letter-spacing: 0;
+        }
+
+        #home .hero-name {
+            position: relative;
+            margin-left: clamp(4px, 0.8vw, 12px);
+            padding-left: clamp(36px, 4vw, 62px);
+            color: rgba(255, 255, 255, 0.98);
+            font-size: clamp(0.98rem, 1.45vw, 1.42rem);
+            line-height: 1;
+            letter-spacing: 0.18em;
+        }
+
+        #home .hero-name::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 50%;
+            width: clamp(24px, 3vw, 46px);
+            height: 2px;
+            border-radius: 999px;
+            background: linear-gradient(90deg, var(--glow), var(--accent));
+            box-shadow: 0 0 18px rgba(127, 207, 255, 0.52);
+            transform: translateY(-50%);
+        }
+
+        #home .hero-portfolio {
+            font-size: clamp(4.4rem, 7vw, 8.6rem);
+            line-height: 0.82;
+            font-weight: 800;
+            letter-spacing: 0;
+            text-transform: uppercase;
+        }
+
+        #home .hero-portfolio::before {
+            content: "PORTFOLIO";
+            position: absolute;
+            left: 0.055em;
+            top: 0.075em;
+            z-index: -1;
+            color: transparent;
+            -webkit-text-stroke: 1px rgba(255, 255, 255, 0.16);
+            text-stroke: 1px rgba(255, 255, 255, 0.16);
+            opacity: 0.72;
+            filter: none;
+        }
+
+        #home .hero-year {
+            margin-left: 0;
+            padding-top: clamp(4px, 0.8vw, 10px);
+            color: rgba(255, 255, 255, 0.96);
+            font-size: clamp(1.68rem, 3.2vw, 3.85rem);
+            letter-spacing: 0.02em;
         }
 
         #home .scene-inner::before {
@@ -2749,6 +2803,10 @@
         #about .about-card h3 {
             padding-bottom: 0;
             border-bottom: 0;
+            font-size: clamp(0.64rem, 0.78vw, 0.84rem);
+            letter-spacing: 0.14em;
+            line-height: 1.15;
+            white-space: nowrap;
         }
 
         .honor-list li:nth-child(n + 6) {
@@ -3028,6 +3086,60 @@
             justify-content: flex-start;
         }
 
+        #contact .section-title,
+        #contact .section-title .typewriter,
+        #contact .section-title span {
+            color: #ffffff;
+            font-weight: 900;
+            text-shadow: 0 3px 18px rgba(0, 0, 0, 0.6), 0 0 26px rgba(255, 255, 255, 0.14);
+        }
+
+        #contact .typewriter::after {
+            margin-left: 0.08em;
+        }
+
+        .contact-tab {
+            position: relative;
+            perspective: 900px;
+            transform-style: preserve-3d;
+            -webkit-transform-style: preserve-3d;
+            overflow: hidden;
+        }
+
+        .contact-tab-inner {
+            position: relative;
+            display: grid;
+            place-items: center;
+            transform-style: preserve-3d;
+            -webkit-transform-style: preserve-3d;
+            transition: transform 520ms cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .contact-tab.is-copied .contact-tab-inner {
+            transform: rotateX(180deg);
+        }
+
+        .contact-tab-face {
+            grid-area: 1 / 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+            white-space: nowrap;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            transform: rotateX(0deg) translateZ(0.1px);
+        }
+
+        .contact-tab-back {
+            position: absolute;
+            inset: 0;
+            color: #ffffff;
+            background: transparent;
+            border-radius: inherit;
+            transform: rotateX(180deg) translateZ(0.1px);
+        }
+
         .button:hover {
             box-shadow: 0 0 22px rgba(139, 214, 255, 0.18), 0 10px 30px rgba(0, 0, 0, 0.18);
         }
@@ -3192,6 +3304,14 @@
 
             #home .scene-inner {
                 padding: 18px;
+            }
+
+            #home .hero-title {
+                max-width: 100%;
+            }
+
+            #home .hero-portfolio {
+                font-size: clamp(3.55rem, 18vw, 5.6rem);
             }
 
             .split,
@@ -3539,7 +3659,7 @@
                 <h1 class="hero-title">
                     <span class="hero-name">Zeng Ting</span>
                     <span class="hero-portfolio title-highlight">Portfolio</span>
-                    <span class="hero-year typewriter is-typing" aria-label="2025-2026" style="--typewriter-width: 9.85ch; --typewriter-steps: 9;"><span class="typewriter-text">2025-2026</span></span>
+                    <span class="hero-year typewriter is-typing" aria-label="2025-2026" style="--typewriter-width: 9ch; --typewriter-steps: 9;"><span class="typewriter-text">2025-2026</span></span>
                 </h1>
                 <p class="lead">
                     曾婷，交互设计方向硕士。擅长用敏锐审美完成视觉传达，
@@ -3569,8 +3689,7 @@
                     <div class="about-intro">
                         <p class="about-hi">Hi, ;)</p>
                         <p>
-                            Here is Zeng Ting. Skilled at using a keen aesthetic sense for visual communication and
-                            driving content growth with a clear data-driven mindset.
+                            Here is Zeng Ting. Blending visual aesthetics, UX thinking and data-driven growth.
                         </p>
                     </div>
                 </aside>
@@ -3582,12 +3701,10 @@
                             <div class="education-item">
                                 <h4>广东工业大学</h4>
                                 <p>硕士 / 全日制 / 研究方向：交互设计</p>
-                                <span class="education-date">2023.09 - 2026.06</span>
                             </div>
                             <div class="education-item">
                                 <h4>上海电机学院</h4>
                                 <p>学士 / 全日制 / 专业：工业设计</p>
-                                <span class="education-date">2019.09 - 2023.06</span>
                             </div>
                         </div>
                     </section>
@@ -3598,12 +3715,10 @@
                             <div class="education-item">
                                 <h4>北京智谱华章科技股份有限公司</h4>
                                 <p>UX设计实习生 / AI智能体产品交互设计，负责用户任务流程、高保真界面与交互规范建设。</p>
-                                <span class="education-date">2025.08 - 2026.01</span>
                             </div>
                             <div class="education-item">
                                 <h4>广州汇量科技有限公司</h4>
                                 <p>UI设计实习生 / 高转化游戏互动广告界面与动效设计，参与视觉策略、AIGC资源生成与落地验收。</p>
-                                <span class="education-date">2025.03 - 2025.06</span>
                             </div>
                         </div>
                     </section>
@@ -3793,15 +3908,29 @@
         <section id="contact" class="scene">
             <div class="scene-inner contact-layout" data-rise>
                 <p class="eyebrow">Contact</p>
-                <h2 class="section-title"><span class="typewriter is-typing" aria-label="开启设计创新新可能" style="--typewriter-width: 9.25em; --typewriter-steps: 9; --typewriter-duration: 1480ms;"><span class="typewriter-text">开启设计创新新可能</span></span></h2>
+                <h2 class="section-title"><span class="typewriter is-typing" aria-label="如何联系我" style="--typewriter-width: 5em; --typewriter-steps: 5; --typewriter-duration: 980ms;"><span class="typewriter-text">如何联系我</span></span></h2>
                 <p class="lead">
                     期待共同打造充满感官享受、富有严密逻辑的好设计。
                     如果你正在寻找兼具研究、体验、视觉与 AI 工具意识的设计伙伴，欢迎联系我。
                 </p>
                 <div class="contact-links">
-                    <a href="mailto:1779884551@qq.com" class="button">1779884551@qq.com</a>
-                    <a href="tel:18383811626" class="button">18383811626</a>
-                    <a href="#home" class="button">Back to Top</a>
+                    <button class="button contact-tab" type="button" data-copy-value="1779884551@qq.com" aria-label="复制邮箱">
+                        <span class="contact-tab-inner">
+                            <span class="contact-tab-face contact-tab-front">1779884551@qq.com</span>
+                            <span class="contact-tab-face contact-tab-back">复制成功</span>
+                        </span>
+                    </button>
+                    <button class="button contact-tab" type="button" data-copy-value="18383811626" aria-label="复制电话">
+                        <span class="contact-tab-inner">
+                            <span class="contact-tab-face contact-tab-front">18383811626</span>
+                            <span class="contact-tab-face contact-tab-back">复制成功</span>
+                        </span>
+                    </button>
+                    <a href="#home" class="button contact-tab">
+                        <span class="contact-tab-inner">
+                            <span class="contact-tab-face contact-tab-front">Back to Top</span>
+                        </span>
+                    </a>
                 </div>
             </div>
         </section>
@@ -3860,6 +3989,7 @@
         const pdfPages = document.getElementById("pdfPages");
         const pdfTitle = document.getElementById("pdfTitle");
         const pdfClose = document.querySelector(".pdf-close");
+        const contactCopyTabs = Array.from(document.querySelectorAll("[data-copy-value]"));
         const pdfJsModuleUrl = new URL("assets/pdf.min.mjs", window.location.href).href;
         const pdfJsWorkerUrl = new URL("assets/pdf.worker.min.mjs", window.location.href).href;
         const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -4799,6 +4929,7 @@
                 contactRevealArmed = true;
                 setContactRevealReady(true);
                 playContactRevealAnimation();
+                replaySceneTypewriters(index, true);
             }, delay);
         }
 
@@ -5197,6 +5328,44 @@
                 event.preventDefault();
                 const title = item.dataset.pdfTitle || item.querySelector(".portfolio-title")?.textContent?.trim();
                 openPdfModal(item.dataset.pdf, title, item.dataset.video, item.dataset.videoTitle, item.dataset.previewDir, item.dataset.previewPages, item.dataset.previewPad);
+            });
+        });
+
+        async function copyTextToClipboard(text) {
+            if (navigator.clipboard?.writeText && window.isSecureContext) {
+                await navigator.clipboard.writeText(text);
+                return;
+            }
+
+            const field = document.createElement("textarea");
+            field.value = text;
+            field.setAttribute("readonly", "");
+            field.style.position = "fixed";
+            field.style.left = "-9999px";
+            field.style.top = "0";
+            document.body.appendChild(field);
+            field.select();
+            document.execCommand("copy");
+            field.remove();
+        }
+
+        contactCopyTabs.forEach((tab) => {
+            tab.addEventListener("click", async () => {
+                const value = tab.dataset.copyValue;
+                if (!value) return;
+
+                window.clearTimeout(Number(tab.dataset.copyTimer || 0));
+                try {
+                    await copyTextToClipboard(value);
+                    tab.classList.add("is-copied");
+                    const timer = window.setTimeout(() => {
+                        tab.classList.remove("is-copied");
+                        tab.dataset.copyTimer = "";
+                    }, 1000);
+                    tab.dataset.copyTimer = String(timer);
+                } catch (error) {
+                    tab.classList.remove("is-copied");
+                }
             });
         });
 
